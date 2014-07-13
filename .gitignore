@@ -34,3 +34,39 @@ Icon
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
+
+# =========================
+# crud that doesn't belong here
+# =========================
+
+# eclipse
+/.settings
+
+
+# build things
+/bin
+*.class
+*.pyc
+
+# libraries
+/lib
+*.jar
+*.zip
+
+# our lovely sentiment analyzer
+/py/nltk
+/py/nltk_data
+/py/yaml
+classifier.pickle
+features.pickle
+
+# execution & test things
+/test
+/in
+/out
+/log
+/*.log
+/*.log.*
+/*.csv
+/*.sql
+/*.xml
