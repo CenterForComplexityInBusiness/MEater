@@ -125,6 +125,10 @@ public class MEaterConfig extends ConfigUnit {
 		return this.generalSettings;
 	}
 
+	public ComponentConfigContainer getPathContainer() {
+		return pathContainer;
+	}
+
 	public MEaterMain createMEaterMain(String name) throws MEaterException {
 		MEaterMain main = new MEaterMain(MEaterMain.genName(name), this
 				.getGeneralSettings());
