@@ -1,0 +1,23 @@
+MEater ("Media Eater") is an upgraded version of TwEater (originally developed at https://github.com/dmonner/tweater), designed to allow addition of new types of media collection and analysis as well as recombining existing components into new configurations. It is very much a work-in-progress, but it's getting there!! 
+
+If you want to try it out in its current state, you'll need to acquire and include all of the libraries found in the stock version of TwEater:
+
+- DBPool-5.0.jar
+- jchronic-0.2.3.jar
+- jython.jar
+- mail.jar
+- mysql-connector-java-5.1.14-bin.jar
+- PlyJy.jar
+
+Plus the following additional libraries:
+
+- commons-cli-1.2.jar
+- commons-collections-3.2.1
+- commons-configuration-1.10
+- commons-lang-2.6
+- commons-logging-1.1.1
+- super-csv-2.2.0
+
+...And the latest version of Twitter4J.
+
+You will also need the Python NLTK library (also included in the original TwEater distribution) to use the sentiment analysis component, as well as its classifier + feature .pickle files.
