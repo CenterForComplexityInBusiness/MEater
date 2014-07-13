@@ -1,5 +1,7 @@
 package edu.umd.rhsmith.diads.meater.modules.tweater;
 
+import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
+import edu.umd.rhsmith.diads.meater.core.app.MEaterMain;
 import edu.umd.rhsmith.diads.meater.core.config.ConfigModule;
 import edu.umd.rhsmith.diads.meater.modules.tweater.oauth.EditOAuthOperation;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryFollow;
@@ -32,6 +34,12 @@ public class TwEater extends ConfigModule {
 		this.registerComponentType(TimelineCollectorConfig.class);
 		this.registerComponentType(CsvQuerySourceConfig.class);
 		this.registerComponentType(CsvStatusEaterConfig.class);
+	}
+
+	@Override
+	public void addTo(MEaterMain main) throws MEaterConfigurationException {
+		super.addTo(main);
+		main.addRuntimeModule(new TwitterManager());
 	}
 
 	@Override

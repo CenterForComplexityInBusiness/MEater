@@ -7,7 +7,6 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
-import edu.umd.rhsmith.diads.meater.core.app.components.ComponentManager;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaProcessor;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.BaseMediaSetUpdater;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.MediaSetUpdater;
@@ -41,9 +40,9 @@ public abstract class StatusEater extends Component implements
 
 	private final boolean discardsUnmatched;
 
-	public StatusEater(StatusEaterInitializer init, ComponentManager mgr)
+	public StatusEater(StatusEaterInitializer init)
 			throws MEaterConfigurationException {
-		super(init, mgr);
+		super(init);
 
 		this.discardsUnmatched = init.isDiscardsUnmatched();
 

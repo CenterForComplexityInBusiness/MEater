@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
-import edu.umd.rhsmith.diads.meater.core.app.components.ComponentManager;
 import edu.umd.rhsmith.diads.meater.modules.tweater.UserStatusData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItem;
 import edu.umd.rhsmith.diads.meater.util.ControlException;
@@ -21,9 +20,9 @@ public class CsvStatusEater extends StatusEater {
 	 */
 	private PrintWriter outfile;
 
-	public CsvStatusEater(CsvStatusEaterInitializer init, ComponentManager mgr)
+	public CsvStatusEater(CsvStatusEaterInitializer init)
 			throws MEaterConfigurationException {
-		super(init, mgr);
+		super(init);
 
 		try {
 			this.outfile = new PrintWriter(init.getFilename());

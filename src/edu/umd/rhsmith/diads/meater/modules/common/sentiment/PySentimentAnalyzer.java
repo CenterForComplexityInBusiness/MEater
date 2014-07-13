@@ -7,7 +7,6 @@ import org.python.core.PySystemState;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
-import edu.umd.rhsmith.diads.meater.core.app.components.ComponentManager;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaProcessor;
 import edu.umd.rhsmith.diads.meater.util.ControlException;
 
@@ -18,9 +17,8 @@ public class PySentimentAnalyzer extends Component implements
 	private final String classifierFilename;
 	private final String featuresFilename;
 
-	public PySentimentAnalyzer(PySentimentAnalyzerInitializer init,
-			ComponentManager mgr) throws MEaterConfigurationException {
-		super(init, mgr);
+	public PySentimentAnalyzer(PySentimentAnalyzerInitializer init) throws MEaterConfigurationException {
+		super(init);
 
 		this.classifierFilename = init.getClassifierFilename();
 		this.featuresFilename = init.getFeaturesFilename();

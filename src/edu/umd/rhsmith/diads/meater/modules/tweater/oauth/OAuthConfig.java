@@ -5,7 +5,7 @@ import org.apache.commons.configuration.HierarchicalConfiguration;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.config.ConfigUnit;
 
-public class OAuthConfig extends ConfigUnit {
+public class OAuthConfig extends ConfigUnit implements OAuthInfo {
 
 	private static final String CKEY_ACCESS_TOKEN_SECRET = "accessTokenSecret";
 	private static final String CKEY_ACCESS_TOKEN = "accessToken";
@@ -26,18 +26,22 @@ public class OAuthConfig extends ConfigUnit {
 		this.registerSetupConsoleOperation(new OAuthSetupOperation(this));
 	}
 
+	@Override
 	public String getConsumerKey() {
 		return consumerKey;
 	}
 
+	@Override
 	public String getConsumerSecret() {
 		return consumerSecret;
 	}
 
+	@Override
 	public String getAccessToken() {
 		return accessToken;
 	}
 
+	@Override
 	public String getAccessTokenSecret() {
 		return accessTokenSecret;
 	}

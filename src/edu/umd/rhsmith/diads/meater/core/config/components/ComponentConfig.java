@@ -46,7 +46,7 @@ public abstract class ComponentConfig extends ConfigUnit implements
 
 	public final Component createComponentInstance(ComponentManager mgr)
 			throws MEaterConfigurationException {
-		Component c = this.instantiateComponent(mgr);
+		Component c = this.instantiateComponent();
 		for (String s : this.mediaSourceNames.keySet()) {
 			c.expectMediaProcessor(s, this.mediaSourceNames.get(s));
 		}
@@ -56,7 +56,7 @@ public abstract class ComponentConfig extends ConfigUnit implements
 		return c;
 	}
 
-	protected abstract Component instantiateComponent(ComponentManager mgr)
+	protected abstract Component instantiateComponent()
 			throws MEaterConfigurationException;
 
 	/*

@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.XMLConfiguration;
-
 import twitter4j.Paging;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -17,13 +14,13 @@ import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
-import edu.umd.rhsmith.diads.meater.core.app.components.ComponentManager;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.BaseMediaProcessor;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaProcessor;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaSource;
 import edu.umd.rhsmith.diads.meater.modules.tweater.DefaultUserStatusData;
+import edu.umd.rhsmith.diads.meater.modules.tweater.TwitterManager;
 import edu.umd.rhsmith.diads.meater.modules.tweater.UserStatusData;
-import edu.umd.rhsmith.diads.meater.modules.tweater.oauth.OAuthConfig;
+import edu.umd.rhsmith.diads.meater.modules.tweater.oauth.OAuthInfo;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryFollow;
 import edu.umd.rhsmith.diads.meater.util.ControlException;
 import edu.umd.rhsmith.diads.meater.util.Util;
@@ -48,7 +45,7 @@ public class TimelineCollector extends Component implements Runnable {
 	public static final String SRCNAME_TWEETS = "tweets";
 	public static final String PNAME_USERS = "users";
 
-	private final Twitter twitter;
+	private Twitter twitter;
 	private final LinkedBlockingQueue<QueryFollow> userQueries;
 
 	// TODO better means of record-keeping here? this will *eventually* fill up.
@@ -65,10 +62,11 @@ public class TimelineCollector extends Component implements Runnable {
 
 	private final MediaSource<UserStatusData> statusSource;
 	private final MediaProcessor<QueryFollow> userProcessor;
+	private final String oAuthName;
 
-	public TimelineCollector(TimelineCollectorInitializer init,
-			ComponentManager mgr) throws MEaterConfigurationException {
-		super(init, mgr);
+	public TimelineCollector(TimelineCollectorInitializer init)
+			throws MEaterConfigurationException {
+		super(init);
 
 		this.shutdownQuerierThread = false;
 		this.querierThread = new Thread(this);
@@ -91,23 +89,7 @@ public class TimelineCollector extends Component implements Runnable {
 		};
 		this.registerMediaProcessor(userProcessor);
 
-		// also get oauth -> build twitter collection object
-		ConfigurationBuilder cb = new ConfigurationBuilder();
-		String oauthFilename = init.getoAuthConfigurationName();
-		try {
-			XMLConfiguration xml = new XMLConfiguration(oauthFilename);
-			OAuthConfig oAuth = new OAuthConfig();
-			oAuth.loadConfigurationFrom(xml);
-			cb.setOAuthConsumerKey(oAuth.getConsumerKey());
-			cb.setOAuthConsumerSecret(oAuth.getConsumerSecret());
-			cb.setOAuthAccessToken(oAuth.getAccessToken());
-			cb.setOAuthAccessTokenSecret(oAuth.getAccessTokenSecret());
-			// (timeout from original TLC code)
-			cb.setHttpConnectionTimeout(40000);
-			this.twitter = new TwitterFactory(cb.build()).getInstance();
-		} catch (ConfigurationException e) {
-			throw new MEaterConfigurationException(e);
-		}
+		this.oAuthName = init.getoAuthConfigurationName();
 	}
 
 	/*
@@ -118,7 +100,27 @@ public class TimelineCollector extends Component implements Runnable {
 
 	@Override
 	protected void doInitRoutine() throws MEaterConfigurationException {
-		// nothing to do here
+		// also get oauth -> build twitter collection object
+		ConfigurationBuilder cb = new ConfigurationBuilder();
+
+		TwitterManager mgr = this.getComponentManager().getMain()
+				.getRuntimeModule(TwitterManager.class);
+		if (mgr == null) {
+			throw new MEaterConfigurationException(MSG_ERR_NOTWMGR);
+		}
+		OAuthInfo oAuth = mgr.getOAuthInfo(oAuthName);
+		if (oAuth == null) {
+			throw new MEaterConfigurationException(this.messageString(
+					MSG_ERR_AUTH_FMT, oAuthName));
+		}
+
+		cb.setOAuthConsumerKey(oAuth.getConsumerKey());
+		cb.setOAuthConsumerSecret(oAuth.getConsumerSecret());
+		cb.setOAuthAccessToken(oAuth.getAccessToken());
+		cb.setOAuthAccessTokenSecret(oAuth.getAccessTokenSecret());
+		// (timeout from original TLC code)
+		cb.setHttpConnectionTimeout(40000);
+		this.twitter = new TwitterFactory(cb.build()).getInstance();
 	}
 
 	@Override
@@ -198,7 +200,7 @@ public class TimelineCollector extends Component implements Runnable {
 			// output user-status object
 			UserStatusData data = new DefaultUserStatusData(tweets
 					.get(currTweetIdx));
-			this.statusSource.sourceMedia(data, this.getMediaManager());
+			this.statusSource.sourceMedia(data);
 
 			// if we're at the end of the page, reset and go to the next page
 			if ((currTweetIdx % 199 == 0) && currTweetIdx != 0) {
@@ -265,6 +267,8 @@ public class TimelineCollector extends Component implements Runnable {
 	 * --------------------------------
 	 */
 
+	private static final String MSG_ERR_AUTH_FMT = "Unable to load oAuth configuration name '%s'";
+	private static final String MSG_ERR_NOTWMGR = "No twitter manager available for getting OAuth";
 	private static final String MSG_ERR_SHUTDOWN_INTERRUPTED = "Interrupted while awaiting querier theread termination";
 	private static final String MSG_QUERYTHREAD_ENDED = "Querier shut down.";
 	private static final String MSG_COLLECTING_ID_FMT = "Collecting user id %ld";

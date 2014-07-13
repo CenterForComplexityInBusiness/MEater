@@ -12,7 +12,6 @@ import twitter4j.GeoLocation;
 import com.mdimension.jchronic.Chronic;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
-import edu.umd.rhsmith.diads.meater.core.app.components.ComponentManager;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryFollow;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItem;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItemTime;
@@ -34,9 +33,9 @@ public class CsvQuerySource extends QuerySource {
 	 */
 	private final File infile;
 
-	public CsvQuerySource(CsvQuerySourceInitializer init, ComponentManager mgr)
+	public CsvQuerySource(CsvQuerySourceInitializer init)
 			throws MEaterConfigurationException {
-		super(init, mgr);
+		super(init);
 		this.infile = new File(init.getFilename());
 	}
 

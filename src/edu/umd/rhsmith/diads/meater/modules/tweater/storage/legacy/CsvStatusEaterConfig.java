@@ -4,7 +4,6 @@ import org.apache.commons.configuration.HierarchicalConfiguration;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
-import edu.umd.rhsmith.diads.meater.core.app.components.ComponentManager;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertiesEligible;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupProperty;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertyTypes;
@@ -21,9 +20,9 @@ public class CsvStatusEaterConfig extends StatusEaterConfig implements
 	}
 
 	@Override
-	public Component instantiateComponent(ComponentManager mgr)
+	public Component instantiateComponent()
 			throws IllegalStateException, MEaterConfigurationException {
-		return new CsvStatusEater(this, mgr);
+		return new CsvStatusEater(this);
 	}
 
 	/*

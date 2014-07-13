@@ -90,10 +90,10 @@ public class MediaManager extends ControlUnit {
 	public <M> void registerSource(String ownerName, MediaSource<M> source)
 			throws IllegalStateException {
 		this.requireUnStarted();
-
 		this.logInfo(MSG_SRC_REG_FMT, source.getSourceName());
 		this.sources.put(Media.handlerName(ownerName, source.getSourceName()),
 				source);
+		source.setMediaManager(this);
 	}
 
 	public <M> void registerProcessor(String ownerName,

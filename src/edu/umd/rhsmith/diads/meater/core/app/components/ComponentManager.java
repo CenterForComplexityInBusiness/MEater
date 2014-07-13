@@ -57,7 +57,7 @@ public class ComponentManager extends ControlUnit {
 	public void registerComponent(Component component)
 			throws IllegalStateException {
 		this.requireUnStarted();
-
+		
 		this.logInfo(MSG_REG_FMT, component.getName());
 		this.components.put(component.getName(), component);
 		component.setComponentManager(this);

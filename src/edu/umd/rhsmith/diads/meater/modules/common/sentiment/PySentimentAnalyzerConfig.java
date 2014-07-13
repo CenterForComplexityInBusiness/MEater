@@ -3,7 +3,6 @@ package edu.umd.rhsmith.diads.meater.modules.common.sentiment;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
-import edu.umd.rhsmith.diads.meater.core.app.components.ComponentManager;
 import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertiesEligible;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupProperty;
@@ -26,9 +25,9 @@ public class PySentimentAnalyzerConfig extends ComponentConfig implements
 	}
 
 	@Override
-	public PySentimentAnalyzer instantiateComponent(ComponentManager mgr)
+	public PySentimentAnalyzer instantiateComponent()
 			throws MEaterConfigurationException {
-		return new PySentimentAnalyzer(this, mgr);
+		return new PySentimentAnalyzer(this);
 	}
 
 	/*

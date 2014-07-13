@@ -25,7 +25,7 @@ public abstract class Component extends ControlUnit {
 	private final Set<MediaSource<?>> mediaSources;
 	private final Set<MediaProcessor<?>> mediaProcessors;
 
-	public Component(ComponentInitializer init, ComponentManager componentEnv)
+	public Component(ComponentInitializer init)
 			throws MEaterConfigurationException {
 		super();
 
@@ -40,8 +40,6 @@ public abstract class Component extends ControlUnit {
 		this.mediaSources = new HashSet<MediaSource<?>>();
 		this.mediaProcessors = new HashSet<MediaProcessor<?>>();
 		this.setupExpectedMedia(init);
-
-		componentEnv.registerComponent(this);
 	}
 
 	/*

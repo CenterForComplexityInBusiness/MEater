@@ -6,7 +6,6 @@ import java.util.NoSuchElementException;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
-import edu.umd.rhsmith.diads.meater.core.app.components.ComponentManager;
 import edu.umd.rhsmith.diads.meater.util.ControlException;
 
 public final class MediaPath<M> extends Component implements MediaProcessor<M> {
@@ -17,9 +16,9 @@ public final class MediaPath<M> extends Component implements MediaProcessor<M> {
 	private final Collection<String> processorNames;
 	private final Collection<MediaProcessor<? super M>> processors;
 
-	public MediaPath(MediaPathInitializer<M> init, ComponentManager env)
+	public MediaPath(MediaPathInitializer<M> init)
 			throws MEaterConfigurationException {
-		super(init, env);
+		super(init);
 		this.mediaClass = init.getMediaClass();
 		this.registerMediaProcessor(this);
 		this.sourceNames = init.getSourceNames();

@@ -3,9 +3,6 @@ package edu.umd.rhsmith.diads.meater.modules.tweater.streaming;
 import java.util.Date;
 import java.util.TreeSet;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.XMLConfiguration;
-
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
@@ -15,7 +12,6 @@ import twitter4j.TwitterStreamFactory;
 import twitter4j.auth.AccessToken;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
-import edu.umd.rhsmith.diads.meater.core.app.components.ComponentManager;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaSource;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.BaseMediaSetUpdater;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.MediaSetUpdater;
@@ -23,9 +19,10 @@ import edu.umd.rhsmith.diads.meater.modules.tweater.DefaultStatusData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.DefaultUserData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.DefaultUserStatusData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.StatusData;
+import edu.umd.rhsmith.diads.meater.modules.tweater.TwitterManager;
 import edu.umd.rhsmith.diads.meater.modules.tweater.UserData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.UserStatusData;
-import edu.umd.rhsmith.diads.meater.modules.tweater.oauth.OAuthConfig;
+import edu.umd.rhsmith.diads.meater.modules.tweater.oauth.OAuthInfo;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItem;
 import edu.umd.rhsmith.diads.meater.util.Util;
 
@@ -47,7 +44,7 @@ public class StreamQuerier extends Component implements Runnable,
 	/**
 	 * The connection to Twitter
 	 */
-	private final TwitterStream tw;
+	private TwitterStream tw;
 
 	/**
 	 * The minimum amount of time (ms) allowed between each request to Twitter
@@ -82,10 +79,11 @@ public class StreamQuerier extends Component implements Runnable,
 
 	private final MediaSource<UserStatusData> statusSource;
 	private final MediaSetUpdater<QueryItem> queryUpdater;
+	private final String oAuthName;
 
-	public StreamQuerier(StreamQuerierInitializer init, ComponentManager mgr)
+	public StreamQuerier(StreamQuerierInitializer init)
 			throws MEaterConfigurationException {
-		super(init, mgr);
+		super(init);
 
 		this.lastUpdate = Long.MIN_VALUE;
 		this.needsUpdate = true;
@@ -113,20 +111,7 @@ public class StreamQuerier extends Component implements Runnable,
 		};
 		this.registerMediaProcessor(this.queryUpdater.getMediaAdder());
 		this.registerMediaProcessor(this.queryUpdater.getMediaRemover());
-
-		this.tw = new TwitterStreamFactory().getInstance();
-		String oauthFilename = init.getoAuthConfigurationName();
-		try {
-			XMLConfiguration xml = new XMLConfiguration(oauthFilename);
-			OAuthConfig oAuth = new OAuthConfig();
-			oAuth.loadConfigurationFrom(xml);
-			tw.setOAuthConsumer(oAuth.getConsumerKey(), oAuth
-					.getConsumerSecret());
-			tw.setOAuthAccessToken(new AccessToken(oAuth.getAccessToken(),
-					oAuth.getAccessTokenSecret()));
-		} catch (ConfigurationException e) {
-			throw new MEaterConfigurationException(e);
-		}
+		this.oAuthName = init.getoAuthConfigurationName();
 	}
 
 	/**
@@ -212,8 +197,7 @@ public class StreamQuerier extends Component implements Runnable,
 		UserData user = new DefaultUserData(arg0.getUser());
 		UserStatusData us = new DefaultUserStatusData(user, status);
 
-		this.statusSource.sourceMedia(us, this.getComponentManager()
-				.getMediaManager());
+		this.statusSource.sourceMedia(us);
 	}
 
 	@Override
@@ -235,14 +219,31 @@ public class StreamQuerier extends Component implements Runnable,
 	}
 
 	@Override
-	protected void doInitRoutine() {
-		tw.addListener(this);
+	protected void doInitRoutine() throws MEaterConfigurationException {
+		TwitterManager mgr = this.getComponentManager().getMain()
+				.getRuntimeModule(TwitterManager.class);
+		if (mgr == null) {
+			throw new MEaterConfigurationException(MSG_ERR_NOTWMGR);
+		}
+		OAuthInfo oAuth = mgr.getOAuthInfo(oAuthName);
+		if (oAuth == null) {
+			throw new MEaterConfigurationException(this.messageString(
+					MSG_ERR_AUTH_FMT, oAuthName));
+		}
+
+		this.tw = new TwitterStreamFactory().getInstance();
+		tw.setOAuthConsumer(oAuth.getConsumerKey(), oAuth.getConsumerSecret());
+		tw.setOAuthAccessToken(new AccessToken(oAuth.getAccessToken(), oAuth
+				.getAccessTokenSecret()));
 	}
 
 	@Override
 	protected void doStartupRoutine() {
 		// start the builder thread
 		this.querierThread.start();
+
+		// start listening on twitter
+		tw.addListener(this);
 	}
 
 	@Override
@@ -304,6 +305,8 @@ public class StreamQuerier extends Component implements Runnable,
 	 * --------------------------------
 	 */
 
+	private static final String MSG_ERR_AUTH_FMT = "Unable to load oAuth configuration name '%s'";
+	private static final String MSG_ERR_NOTWMGR = "No twitter manager available for getting OAuth";
 	private static final String MSG_RUNNING_QUERIES_FMT = "active query: %s";
 	private static final String MSG_RUNNING = "Querier.run():";
 	private static final String MSG_QUERYTHREAD_ENDED = "Querier shut down.";

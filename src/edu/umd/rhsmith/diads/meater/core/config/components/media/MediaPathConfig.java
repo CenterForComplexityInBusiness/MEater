@@ -8,7 +8,6 @@ import java.util.List;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
-import edu.umd.rhsmith.diads.meater.core.app.components.ComponentManager;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaClassNotFoundException;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaClassNotRegisteredException;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaPath;
@@ -62,21 +61,20 @@ public final class MediaPathConfig extends ComponentConfig {
 	}
 
 	@Override
-	public MediaPath<?> instantiateComponent(ComponentManager env)
+	public MediaPath<?> instantiateComponent()
 			throws MEaterConfigurationException {
 		// use these intermediate steps to maintain type safety - parameter M is
 		// inferred from generic wildcard of current media class
 		if (this.mediaClass != null) {
-			return this.createTypeSafe(this.mediaClass, env);
+			return this.createTypeSafe(this.mediaClass);
 		} else {
 			throw new MEaterConfigurationException(String.format(
 					MSG_ERR_NO_CLASS, this.getInstanceName()));
 		}
 	}
 
-	private <M> MediaPath<M> createTypeSafe(Class<M> mediaClass,
-			ComponentManager env) throws MEaterConfigurationException {
-		return new MediaPath<M>(this.new Initializer<M>(mediaClass), env);
+	private <M> MediaPath<M> createTypeSafe(Class<M> mediaClass) throws MEaterConfigurationException {
+		return new MediaPath<M>(this.new Initializer<M>(mediaClass));
 	}
 
 	private class Initializer<M> implements MediaPathInitializer<M> {

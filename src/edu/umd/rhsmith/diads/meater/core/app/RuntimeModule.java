@@ -1,22 +1,25 @@
 package edu.umd.rhsmith.diads.meater.core.app;
 
-import edu.umd.rhsmith.diads.meater.util.ControlException;
 import edu.umd.rhsmith.diads.meater.util.ControlUnit;
 
 public abstract class RuntimeModule extends ControlUnit {
 
-	private final MEaterMain main;
+	private MEaterMain main;
 	private String name;
 
-	public RuntimeModule(String moduleName, MEaterMain main)
-			throws IllegalStateException, ModuleAlreadyLoadedException,
-			MEaterConfigurationException {
+	public RuntimeModule(String moduleName) throws IllegalStateException,
+			ModuleAlreadyLoadedException, MEaterConfigurationException {
 		this.name = moduleName;
-		this.main = main;
 		this.setLogName(moduleName);
-		this.setLogger(main.getLogger());
 
 		this.main.addRuntimeModule(this);
+	}
+
+	void setMain(MEaterMain main) throws IllegalStateException {
+		this.requireUnStarted();
+
+		this.main = main;
+		this.setLogger(main.getLogger());
 	}
 
 	public MEaterMain getMain() {
@@ -29,15 +32,5 @@ public abstract class RuntimeModule extends ControlUnit {
 
 	public String getName() {
 		return name;
-	}
-
-	@Override
-	protected void doStartupRoutine() throws ControlException {
-
-	}
-
-	@Override
-	protected void doShutdownRoutine() {
-
 	}
 }

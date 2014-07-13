@@ -8,7 +8,6 @@ import java.util.TreeSet;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
-import edu.umd.rhsmith.diads.meater.core.app.components.ComponentManager;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaSource;
 import edu.umd.rhsmith.diads.meater.util.Util;
 
@@ -69,9 +68,9 @@ public abstract class QuerySource extends Component implements Runnable {
 	public static final String PNAME_QADDED = "addedQueries";
 	public static final String PNAME_QRMVED = "removedQueries";
 
-	public QuerySource(QuerySourceInitializer init, ComponentManager mgr)
+	public QuerySource(QuerySourceInitializer init)
 			throws MEaterConfigurationException {
-		super(init, mgr);
+		super(init);
 
 		this.buildIntervalMs = init.getRebuildIntervalMs();
 		this.times = new ArrayList<Long>();
@@ -246,11 +245,11 @@ public abstract class QuerySource extends Component implements Runnable {
 	}
 
 	private void delItem(QueryItem qi) {
-		this.removedQueries.sourceMedia(qi, this.getMediaManager());
+		this.removedQueries.sourceMedia(qi);
 	}
 
 	private void addItem(QueryItem qi) {
-		this.addedQueries.sourceMedia(qi, this.getMediaManager());
+		this.addedQueries.sourceMedia(qi);
 	}
 
 	/*
