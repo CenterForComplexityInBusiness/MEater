@@ -158,26 +158,38 @@ public abstract class ControlUnit extends LogUnit {
 	 */
 
 	public final void requireStarted() throws IllegalStateException {
-		if (!this.startFinished) {
-			throw new IllegalStateException(this.messageString(MSG_ERR_NOSTART));
+		synchronized (this.controlLock) {
+			if (!this.startFinished) {
+				throw new IllegalStateException(this
+						.messageString(MSG_ERR_NOSTART));
+			}
 		}
 	}
 
 	public final void requireUnStarted() throws IllegalStateException {
-		if (this.startBegun) {
-			throw new IllegalStateException(this.messageString(MSG_ERR_START));
+		synchronized (this.controlLock) {
+			if (this.startBegun) {
+				throw new IllegalStateException(this
+						.messageString(MSG_ERR_START));
+			}
 		}
 	}
 
 	public final void requireStopped() throws IllegalStateException {
-		if (!this.stopFinished) {
-			throw new IllegalStateException(this.messageString(MSG_ERR_NOSTOP));
+		synchronized (this.controlLock) {
+			if (!this.stopFinished) {
+				throw new IllegalStateException(this
+						.messageString(MSG_ERR_NOSTOP));
+			}
 		}
 	}
 
 	public final void requireUnStopped() throws IllegalStateException {
-		if (this.stopBegun) {
-			throw new IllegalStateException(this.messageString(MSG_ERR_STOP));
+		synchronized (this.controlLock) {
+			if (this.stopBegun) {
+				throw new IllegalStateException(this
+						.messageString(MSG_ERR_STOP));
+			}
 		}
 	}
 

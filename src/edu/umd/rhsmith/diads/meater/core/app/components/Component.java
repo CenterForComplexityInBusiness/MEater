@@ -18,6 +18,7 @@ public abstract class Component extends ControlUnit {
 	private ComponentManager componentManager;
 
 	private final Object initWaiter;
+	private final Object initLock;
 	private boolean initBegun;
 	private boolean initFinished;
 
@@ -32,6 +33,7 @@ public abstract class Component extends ControlUnit {
 		this.setLogName(this.name);
 
 		this.initWaiter = new Object();
+		this.initLock = new Object();
 		this.initBegun = false;
 		this.initFinished = false;
 
@@ -78,25 +80,25 @@ public abstract class Component extends ControlUnit {
 	 */
 
 	public final void initialize() throws MEaterConfigurationException {
-		this.requireUnInited();
+		synchronized (this.initLock) {
+			this.requireUnInited();
 
-		synchronized (this.initWaiter) {
-			this.initBegun = true;
-			this.getLogger().info(this.messageString(MSG_INITING));
-			this.initWaiter.notifyAll();
-		}
+			synchronized (this.initWaiter) {
+				this.initBegun = true;
+				this.getLogger().info(this.messageString(MSG_INITING));
+				this.initWaiter.notifyAll();
+			}
 
-		this.requireInited();
+			this.doInitRoutine();
 
-		this.doInitRoutine();
+			// check that we have the media nodes that we expected
+			this.verifyExpectedMedia();
 
-		// check that we have the media nodes that we expected
-		this.verifyExpectedMedia();
-
-		synchronized (this.initWaiter) {
-			this.initFinished = true;
-			this.getLogger().info(this.messageString(MSG_INITED));
-			this.initWaiter.notifyAll();
+			synchronized (this.initWaiter) {
+				this.initFinished = true;
+				this.getLogger().info(this.messageString(MSG_INITED));
+				this.initWaiter.notifyAll();
+			}
 		}
 	}
 
@@ -123,14 +125,20 @@ public abstract class Component extends ControlUnit {
 	 */
 
 	public final void requireInited() throws IllegalStateException {
-		if (!this.initFinished) {
-			throw new IllegalStateException(this.messageString(MSG_ERR_NOSTART));
+		synchronized (this.initLock) {
+			if (!this.initFinished) {
+				throw new IllegalStateException(this
+						.messageString(MSG_ERR_NOSTART));
+			}
 		}
 	}
 
 	public final void requireUnInited() throws IllegalStateException {
-		if (this.initBegun) {
-			throw new IllegalStateException(this.messageString(MSG_ERR_START));
+		synchronized (this.initLock) {
+			if (this.initBegun) {
+				throw new IllegalStateException(this
+						.messageString(MSG_ERR_START));
+			}
 		}
 	}
 
