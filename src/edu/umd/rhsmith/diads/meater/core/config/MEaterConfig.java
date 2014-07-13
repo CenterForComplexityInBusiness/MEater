@@ -60,6 +60,7 @@ public class MEaterConfig extends ConfigUnit {
 		}
 
 		// start the instance and then wait for it to stop
+		// FIXME handle error conditions in startup
 		try {
 			main.start();
 			main.awaitStopFinished();

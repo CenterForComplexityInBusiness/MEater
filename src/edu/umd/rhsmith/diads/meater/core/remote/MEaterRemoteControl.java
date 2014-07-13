@@ -49,6 +49,7 @@ public class MEaterRemoteControl implements IMEaterRemoteControl {
 			return;
 		}
 
+		// FIXME handle error conditions in startup
 		try {
 			main.start();
 			main.awaitStopFinished();
