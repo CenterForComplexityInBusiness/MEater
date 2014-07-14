@@ -2,7 +2,7 @@ package edu.umd.rhsmith.diads.meater.core.app.components.media.sets;
 
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaSource;
 
-public abstract class BaseMediaSetUpdateViewer<M> implements
+public class BaseMediaSetUpdateViewer<M> implements
 		MediaSetUpdateViewer<M> {
 
 	private final MediaSource<M> adder;

@@ -8,7 +8,8 @@ import java.util.TreeSet;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
-import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaSource;
+import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.BaseMediaSetUpdateViewer;
+import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.MediaSetUpdateViewer;
 import edu.umd.rhsmith.diads.meater.util.Util;
 
 /**
@@ -62,8 +63,7 @@ public abstract class QuerySource extends Component implements Runnable {
 	 */
 	private final Thread builderThread;
 
-	private final MediaSource<QueryItem> addedQueries;
-	private final MediaSource<QueryItem> removedQueries;
+	private final MediaSetUpdateViewer<QueryItem> updater;
 
 	public static final String PNAME_QADDED = "addedQueries";
 	public static final String PNAME_QRMVED = "removedQueries";
@@ -78,12 +78,10 @@ public abstract class QuerySource extends Component implements Runnable {
 		this.prevQueries = new TreeSet<QueryItem>();
 		this.shutdownBuilderThread = false;
 
-		this.addedQueries = new MediaSource<QueryItem>(PNAME_QADDED,
+		this.updater = new BaseMediaSetUpdateViewer<QueryItem>(PNAME_QADDED, PNAME_QRMVED,
 				QueryItem.class);
-		this.removedQueries = new MediaSource<QueryItem>(PNAME_QRMVED,
-				QueryItem.class);
-		this.registerMediaSource(this.addedQueries);
-		this.registerMediaSource(this.removedQueries);
+		this.registerMediaSource(this.updater.getAddedMedia());
+		this.registerMediaSource(this.updater.getRemovedMedia());
 
 		// building happens in its own thread
 		this.builderThread = new Thread(this);
@@ -245,11 +243,11 @@ public abstract class QuerySource extends Component implements Runnable {
 	}
 
 	private void delItem(QueryItem qi) {
-		this.removedQueries.sourceMedia(qi);
+		this.updater.getRemovedMedia().sourceMedia(qi);
 	}
 
 	private void addItem(QueryItem qi) {
-		this.addedQueries.sourceMedia(qi);
+		this.updater.getAddedMedia().sourceMedia(qi);
 	}
 
 	/*
