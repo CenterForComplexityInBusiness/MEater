@@ -78,8 +78,6 @@ public class ComponentManager extends ControlUnit {
 
 	@Override
 	protected void doStartupRoutine() throws ControlException {
-		this.mediaManager.start();
-
 		try {
 			for (Component c : this.components.values()) {
 				c.initialize();
@@ -87,6 +85,8 @@ public class ComponentManager extends ControlUnit {
 		} catch (MEaterConfigurationException e) {
 			throw new ControlException(MSG_ERR_INIT_CONFIG, e);
 		}
+		
+		this.mediaManager.start();
 
 		for (Component c : this.components.values()) {
 			c.start();
