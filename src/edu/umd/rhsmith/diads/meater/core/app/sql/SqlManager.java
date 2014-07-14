@@ -5,19 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.XMLConfiguration;
-
 import snaq.db.DBPoolDataSource;
-import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterInitializer;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterMain;
+import edu.umd.rhsmith.diads.meater.core.config.sql.XmlSqlInfoSource;
 import edu.umd.rhsmith.diads.meater.util.ControlException;
 import edu.umd.rhsmith.diads.meater.util.ControlUnit;
+import edu.umd.rhsmith.diads.meater.util.Util;
 
 public class SqlManager extends ControlUnit {
 
@@ -25,6 +22,7 @@ public class SqlManager extends ControlUnit {
 
 	private final MEaterMain main;
 	private final Map<String, DBPoolDataSource> dataSources;
+	private SqlInfoSource sqlInfoSource;
 
 	public SqlManager(MEaterInitializer init, MEaterMain main)
 			throws SqlManagerCreationException {
@@ -32,6 +30,8 @@ public class SqlManager extends ControlUnit {
 		this.dataSources = new HashMap<String, DBPoolDataSource>();
 		this.setLogger(main.getLogger());
 		this.setLogName(main.getLogName());
+
+		this.sqlInfoSource = new XmlSqlInfoSource();
 
 		try {
 			DriverManager.registerDriver((Driver) Class
@@ -51,6 +51,14 @@ public class SqlManager extends ControlUnit {
 		return main;
 	}
 
+	public SqlInfoSource getSqlInfoSource() {
+		return sqlInfoSource;
+	}
+
+	public void setSqlInfoSource(SqlInfoSource sqlInfoSource) {
+		this.sqlInfoSource = sqlInfoSource;
+	}
+
 	@Override
 	protected void doStartupRoutine() throws ControlException {
 
@@ -63,35 +71,31 @@ public class SqlManager extends ControlUnit {
 		}
 	}
 
-	public DataSource getDataSource(String name) throws IllegalStateException,
-			NoSuchElementException {
+	public DataSource getDataSource(String name) throws IllegalStateException {
 		this.requireUnStopped();
 
 		DBPoolDataSource source = this.dataSources.get(name);
 		if (source == null) {
 			source = this.createDataSource(name);
-
 			if (source == null) {
-				throw new NoSuchElementException();
+				return null;
 			}
-
 			this.dataSources.put(name, source);
 		}
-
 		return source;
 	}
 
 	private DBPoolDataSource createDataSource(String name) {
-		SqlConfiguration sql = new SqlConfiguration();
-
-		try {
-			XMLConfiguration xml = new XMLConfiguration(name + ".xml");
-			sql.loadConfigurationFrom(xml);
-		} catch (ConfigurationException e) {
-			this.logSevere(MSG_ERR_BAD_FILE_FMT, name, e.getMessage());
+		SqlInfo sql;
+		
+		if (this.sqlInfoSource == null) {
+			this.logSevere(MSG_ERR_NO_SRC);
 			return null;
-		} catch (MEaterConfigurationException e) {
-			this.logSevere(MSG_ERR_BAD_FILE_FMT, name, e.getMessage());
+		}
+		try {
+			sql = this.sqlInfoSource.getSqlInfo(name);
+		} catch (SqlLoadException e) {
+			this.logSevere(MSG_ERR_SRC_FAILED_FMT, name, Util.traceMessage(e));
 			return null;
 		}
 
@@ -112,6 +116,6 @@ public class SqlManager extends ControlUnit {
 		return ds;
 	}
 
-	private static final String MSG_ERR_BAD_FILE_FMT = "Malformed SQL configuration file (%s %s)";
-
+	private static final String MSG_ERR_SRC_FAILED_FMT = "Sql auth source unable to retrieve authorization %s: %s";
+	private static final String MSG_ERR_NO_SRC = "Sql auth information requested with no available source!";
 }

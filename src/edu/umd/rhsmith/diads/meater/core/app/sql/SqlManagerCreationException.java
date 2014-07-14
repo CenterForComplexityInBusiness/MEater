@@ -11,7 +11,6 @@ public class SqlManagerCreationException extends MEaterConfigurationException {
 
 	public SqlManagerCreationException(Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
 }

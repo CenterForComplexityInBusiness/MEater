@@ -1,15 +1,16 @@
-package edu.umd.rhsmith.diads.meater.core.app.sql;
+package edu.umd.rhsmith.diads.meater.core.config.sql;
 
 import org.apache.commons.configuration.HierarchicalConfiguration;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
+import edu.umd.rhsmith.diads.meater.core.app.sql.SqlInfo;
 import edu.umd.rhsmith.diads.meater.core.config.ConfigUnit;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertiesEligible;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupProperty;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertyTypes;
 
 @SetupPropertiesEligible
-public class SqlConfiguration extends ConfigUnit {
+public class SqlConfig extends ConfigUnit implements SqlInfo {
 
 	@SetupProperty(propertyType = SetupPropertyTypes.STRING,
 			uiName = "Host name",
@@ -63,7 +64,7 @@ public class SqlConfiguration extends ConfigUnit {
 	public static final String CKEY_TIMEOUT = "idleTimeout";
 	public static final int DEFAULT_IDLE_TIMEOUT_S = 120;
 
-	public SqlConfiguration() {
+	public SqlConfig() {
 		super();
 	}
 
