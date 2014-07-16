@@ -9,7 +9,6 @@ import org.apache.commons.configuration.HierarchicalConfiguration;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaClassNotFoundException;
-import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaClassNotRegisteredException;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaPath;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaPathInitializer;
 import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
@@ -73,7 +72,8 @@ public final class MediaPathConfig extends ComponentConfig {
 		}
 	}
 
-	private <M> MediaPath<M> createTypeSafe(Class<M> mediaClass) throws MEaterConfigurationException {
+	private <M> MediaPath<M> createTypeSafe(Class<M> mediaClass)
+			throws MEaterConfigurationException {
 		return new MediaPath<M>(this.new Initializer<M>(mediaClass));
 	}
 
@@ -221,8 +221,7 @@ public final class MediaPathConfig extends ComponentConfig {
 	}
 
 	@Override
-	protected void saveInternalConfigurationTo(
-			HierarchicalConfiguration config)
+	protected void saveInternalConfigurationTo(HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
 		super.saveInternalConfigurationTo(config);
 
@@ -236,8 +235,7 @@ public final class MediaPathConfig extends ComponentConfig {
 	}
 
 	private void loadMediaClass(HierarchicalConfiguration config)
-			throws MediaClassNotRegisteredException,
-			MediaClassNotFoundException {
+			throws MediaClassNotFoundException {
 
 		String className = config.getString(CKEY_MEDIA_CLASS);
 		if (className != null) {
