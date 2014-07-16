@@ -58,6 +58,19 @@ public class MySQLQueryBuilder extends QuerySource {
 		}
 	}
 
+	@Override
+	protected void doInitRoutine() throws MEaterConfigurationException {
+		super.doInitRoutine();
+
+		this.ds = this.getComponentManager().getMain().getSqlManager()
+				.getDataSource(dbName);
+		if (this.ds == null) {
+			throw new MEaterConfigurationException(this.messageString(
+					"Couldn't get data source from manager with name '%s'",
+					dbName));
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
