@@ -1,13 +1,16 @@
-package edu.umd.rhsmith.diads.meater.core.config.components;
+package edu.umd.rhsmith.diads.meater.core.config.container;
 
-public class DefaultComponentConfigRegistration<C extends ComponentConfig>
-		implements ComponentConfigRegistration<C> {
+import edu.umd.rhsmith.diads.meater.core.config.ConfigUnit;
+
+
+public class DefaultInstanceConfigRegistration<U extends ConfigUnit>
+		implements InstanceConfigRegistration<U> {
 
 	private String name;
 	private String desc;
-	private Class<C> typeClass;
+	private Class<U> typeClass;
 
-	public DefaultComponentConfigRegistration(Class<C> typeClass) {
+	public DefaultInstanceConfigRegistration(Class<U> typeClass) {
 		this.typeClass = typeClass;
 		this.name = extractName(typeClass);
 		this.desc = extractDesc(typeClass);
@@ -40,11 +43,11 @@ public class DefaultComponentConfigRegistration<C extends ComponentConfig>
 	}
 
 	@Override
-	public C createConfiguration() throws ComponentConfigInstantiationException {
+	public U createConfig() throws ConfigInstantiationException {
 		try {
 			return this.typeClass.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
-			throw new ComponentConfigInstantiationException(e);
+			throw new ConfigInstantiationException(e);
 		}
 	}
 

@@ -1,17 +1,17 @@
 package edu.umd.rhsmith.diads.meater.core.config.setup.ops.component;
 
-import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
+import edu.umd.rhsmith.diads.meater.core.config.container.InstanceConfig;
 import edu.umd.rhsmith.diads.meater.core.config.setup.MEaterSetupConsole;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.SetupConsoleOperation;
 
-public class RenameComponentOperation extends SetupConsoleOperation {
+public class RenameInstanceOperation extends SetupConsoleOperation {
 
 	public static final String OP_SHORTNAME = "rename-component";
 	public static final String OP_UINAME = "Rename component";
 
-	private final ComponentConfig owner;
+	private final InstanceConfig owner;
 
-	public RenameComponentOperation(ComponentConfig owner) {
+	public RenameInstanceOperation(InstanceConfig owner) {
 		super(OP_UINAME, OP_SHORTNAME);
 
 		this.owner = owner;

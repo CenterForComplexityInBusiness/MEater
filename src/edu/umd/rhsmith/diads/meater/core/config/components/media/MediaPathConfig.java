@@ -13,8 +13,8 @@ import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaClassNotRegis
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaPath;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaPathInitializer;
 import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
-import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfigInstantiationException;
-import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfigRegistration;
+import edu.umd.rhsmith.diads.meater.core.config.container.ConfigInstantiationException;
+import edu.umd.rhsmith.diads.meater.core.config.container.InstanceConfigRegistration;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathProcessorAddOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathProcessorListOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathProcessorRemoveOperation;
@@ -199,16 +199,16 @@ public final class MediaPathConfig extends ComponentConfig {
 	 */
 
 	@Override
-	public void resetConfiguration() {
+	public void resetInternalConfiguration() {
 		this.sources.clear();
 		this.processors.clear();
 	}
 
 	@Override
-	protected void loadConfigurationPropertiesFrom(
+	protected void loadInternalConfigurationFrom(
 			HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
-		super.loadConfigurationPropertiesFrom(config);
+		super.loadInternalConfigurationFrom(config);
 
 		for (String s : config.getStringArray(CKEY_SOURCE)) {
 			this.sources.add(s);
@@ -221,10 +221,10 @@ public final class MediaPathConfig extends ComponentConfig {
 	}
 
 	@Override
-	protected void saveConfigurationPropertiesTo(
+	protected void saveInternalConfigurationTo(
 			HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
-		super.saveConfigurationPropertiesTo(config);
+		super.saveInternalConfigurationTo(config);
 
 		for (String s : this.sources) {
 			config.addProperty(CKEY_SOURCE, s);
@@ -266,7 +266,7 @@ public final class MediaPathConfig extends ComponentConfig {
 	public static final String TNAME = "MediaPath";
 	public static final String TDESC = "Define a mapping of media source inputs to media processors";
 
-	public static final ComponentConfigRegistration<MediaPathConfig> REGISTRATION = new ComponentConfigRegistration<MediaPathConfig>() {
+	public static final InstanceConfigRegistration<MediaPathConfig> REGISTRATION = new InstanceConfigRegistration<MediaPathConfig>() {
 		@Override
 		public String getName() {
 			return TNAME;
@@ -278,8 +278,8 @@ public final class MediaPathConfig extends ComponentConfig {
 		}
 
 		@Override
-		public MediaPathConfig createConfiguration()
-				throws ComponentConfigInstantiationException {
+		public MediaPathConfig createConfig()
+				throws ConfigInstantiationException {
 			return new MediaPathConfig();
 		}
 	};

@@ -1,22 +1,15 @@
 package edu.umd.rhsmith.diads.meater.modules.tweater.queries;
 
-import org.apache.commons.configuration.HierarchicalConfiguration;
-
-import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertiesEligible;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupProperty;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertyTypes;
+import edu.umd.rhsmith.diads.meater.core.config.props.LongProperty;
 
-@SetupPropertiesEligible
 public abstract class QuerySourceConfig extends ComponentConfig implements
 		QuerySourceInitializer {
 
-	private static final String CKEY_REBUILD_INTERVAL_MS = "rebuildInterval";
-	private static final long DEFAULT_REBUILD_INTERVAL_MS = 180 * 1000L;
-
 	public QuerySourceConfig() {
 		super();
+
+		this.registerConfigProperty(rebuildIntervalMs);
 
 		this.registerMediaProcessorName(QuerySource.PNAME_QADDED,
 				QueryItem.class);
@@ -30,13 +23,16 @@ public abstract class QuerySourceConfig extends ComponentConfig implements
 	 * --------------------------------
 	 */
 
-	@SetupProperty(propertyType = SetupPropertyTypes.LONG,
-			uiName = "Query rebuild interval (ms)",
-			uiDescription = "Interval (in milliseconds) of this QueryBuilder refreshing the queries from the data source")
-	private long rebuildIntervalMs;
+	private static final String CKEY_REBUILD_INTERVAL_MS = "rebuildInterval";
+	private static final long DEFAULT_REBUILD_INTERVAL_MS = 180 * 1000L;
+	private static final String UINAME_REBUILD_INTERVAL_MS = "Query rebuild interval (ms)";
+	private static final String UIDESC_REBUILD_INTERVAL_MS = "Interval (in milliseconds) of this QueryBuilder refreshing the queries from the data source";
+	private final LongProperty rebuildIntervalMs = new LongProperty(
+			CKEY_REBUILD_INTERVAL_MS, DEFAULT_REBUILD_INTERVAL_MS,
+			UINAME_REBUILD_INTERVAL_MS, UIDESC_REBUILD_INTERVAL_MS);
 
 	public long getRebuildIntervalMs() {
-		return this.rebuildIntervalMs;
+		return this.rebuildIntervalMs.getVal();
 	}
 
 	/*
@@ -44,28 +40,4 @@ public abstract class QuerySourceConfig extends ComponentConfig implements
 	 * Config operations
 	 * --------------------------------
 	 */
-
-	@Override
-	public void resetConfiguration() {
-		this.rebuildIntervalMs = DEFAULT_REBUILD_INTERVAL_MS;
-	}
-
-	@Override
-	protected void loadConfigurationPropertiesFrom(
-			HierarchicalConfiguration config)
-			throws MEaterConfigurationException {
-		super.loadConfigurationPropertiesFrom(config);
-
-		this.rebuildIntervalMs = config.getLong(CKEY_REBUILD_INTERVAL_MS,
-				this.rebuildIntervalMs);
-	}
-
-	@Override
-	protected void saveConfigurationPropertiesTo(
-			HierarchicalConfiguration config)
-			throws MEaterConfigurationException {
-		super.saveConfigurationPropertiesTo(config);
-
-		config.setProperty(CKEY_REBUILD_INTERVAL_MS, this.rebuildIntervalMs);
-	}
 }

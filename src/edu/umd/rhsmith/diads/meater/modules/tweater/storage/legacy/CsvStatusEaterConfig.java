@@ -1,14 +1,9 @@
 package edu.umd.rhsmith.diads.meater.modules.tweater.storage.legacy;
 
-import org.apache.commons.configuration.HierarchicalConfiguration;
-
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertiesEligible;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupProperty;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertyTypes;
+import edu.umd.rhsmith.diads.meater.core.config.props.StringProperty;
 
-@SetupPropertiesEligible
 public class CsvStatusEaterConfig extends StatusEaterConfig implements
 		CsvStatusEaterInitializer {
 
@@ -17,11 +12,13 @@ public class CsvStatusEaterConfig extends StatusEaterConfig implements
 
 	public CsvStatusEaterConfig() {
 		super();
+		
+		this.registerConfigProperty(filename);
 	}
 
 	@Override
-	public Component instantiateComponent()
-			throws IllegalStateException, MEaterConfigurationException {
+	public Component instantiateComponent() throws IllegalStateException,
+			MEaterConfigurationException {
 		return new CsvStatusEater(this);
 	}
 
@@ -31,14 +28,15 @@ public class CsvStatusEaterConfig extends StatusEaterConfig implements
 	 * --------------------------------
 	 */
 
-	public static final String CKEY_FILENAME = "filename";
-	public static final String DEFAULT_FILENAME = "results.csv";
-	@SetupProperty(propertyType = SetupPropertyTypes.STRING,
-			uiName = "input filename")
-	private String filename;
+	private static final String CKEY_FILENAME = "filename";
+	private static final String DEFAULT_FILENAME = "results.csv";
+	private static final String UINAME_FILENAME = "output filename";
+	private static final String UIDESC_FILENAME = "";
+	private final StringProperty filename = new StringProperty(CKEY_FILENAME,
+			DEFAULT_FILENAME, UINAME_FILENAME, UIDESC_FILENAME);
 
 	public String getFilename() {
-		return this.filename;
+		return this.filename.getVal();
 	}
 
 	/*
@@ -58,24 +56,4 @@ public class CsvStatusEaterConfig extends StatusEaterConfig implements
 	 * --------------------------------
 	 */
 
-	@Override
-	public void resetConfiguration() {
-		this.filename = DEFAULT_FILENAME;
-	}
-
-	@Override
-	protected void loadConfigurationPropertiesFrom(
-			HierarchicalConfiguration config)
-			throws MEaterConfigurationException {
-		super.loadConfigurationPropertiesFrom(config);
-		this.filename = config.getString(CKEY_FILENAME, this.filename);
-	}
-
-	@Override
-	protected void saveConfigurationPropertiesTo(
-			HierarchicalConfiguration config)
-			throws MEaterConfigurationException {
-		super.saveConfigurationPropertiesTo(config);
-		config.setProperty(CKEY_FILENAME, this.filename);
-	}
 }

@@ -10,30 +10,40 @@ import java.util.Set;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterMain;
 import edu.umd.rhsmith.diads.meater.core.app.ModuleInstantiationException;
-import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfigContainer;
+import edu.umd.rhsmith.diads.meater.core.app.components.ComponentManager;
+import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
 import edu.umd.rhsmith.diads.meater.core.config.components.media.MediaRegistration;
+import edu.umd.rhsmith.diads.meater.core.config.container.InstanceConfigContainer;
 
-public abstract class ConfigModule extends ComponentConfigContainer {
+public abstract class ConfigModule extends
+		InstanceConfigContainer<ComponentConfig> {
 
 	// internal-use name of this module
 	private final String moduleName;
 
 	// media types made public by this module
-	private final Set<MediaRegistration<?>> registrations;
-	private final Map<String, MediaRegistration<?>> namedRegistrations;
-	private final Map<Class<?>, MediaRegistration<?>> classRegistrations;
+	private final Set<MediaRegistration<?>> mediaRegs;
+	private final Map<String, MediaRegistration<?>> namedMediaRegs;
+	private final Map<Class<?>, MediaRegistration<?>> classMediaRegs;
 
 	public ConfigModule(String moduleName) {
 		super();
 		this.moduleName = moduleName;
 
-		this.registrations = new HashSet<MediaRegistration<?>>();
-		this.namedRegistrations = new HashMap<String, MediaRegistration<?>>();
-		this.classRegistrations = new HashMap<Class<?>, MediaRegistration<?>>();
+		this.mediaRegs = new HashSet<MediaRegistration<?>>();
+		this.namedMediaRegs = new HashMap<String, MediaRegistration<?>>();
+		this.classMediaRegs = new HashMap<Class<?>, MediaRegistration<?>>();
 	}
 
 	public void addTo(MEaterMain main) throws MEaterConfigurationException {
 		this.instantiateComponents(main.getComponentManager());
+	}
+
+	public void instantiateComponents(ComponentManager componentManager)
+			throws MEaterConfigurationException {
+		for (ComponentConfig cc : getInstanceConfigs()) {
+			cc.createComponentInstance(componentManager);
+		}
 	}
 
 	/*
@@ -47,30 +57,30 @@ public abstract class ConfigModule extends ComponentConfigContainer {
 	}
 
 	public final void registerMediaType(MediaRegistration<?> registration) {
-		registrations.add(registration);
-		namedRegistrations.put(registration.getMediaName(), registration);
-		classRegistrations.put(registration.getClass(), registration);
+		mediaRegs.add(registration);
+		namedMediaRegs.put(registration.getMediaName(), registration);
+		classMediaRegs.put(registration.getClass(), registration);
 	}
 
 	public boolean mediaTypeIsRegistered(Class<?> mediaClass) {
-		return classRegistrations.containsKey(mediaClass);
+		return classMediaRegs.containsKey(mediaClass);
 	}
 
 	public boolean mediaTypeIsRegistered(String mediaName) {
-		return namedRegistrations.containsKey(mediaName);
+		return namedMediaRegs.containsKey(mediaName);
 	}
 
 	@SuppressWarnings("unchecked")
 	public <M> MediaRegistration<M> getMediaTypeRegistration(Class<M> mediaClass) {
-		return (MediaRegistration<M>) classRegistrations.get(mediaClass);
+		return (MediaRegistration<M>) classMediaRegs.get(mediaClass);
 	}
 
 	public MediaRegistration<?> getMediaTypeRegistration(String mediaName) {
-		return namedRegistrations.get(mediaName);
+		return namedMediaRegs.get(mediaName);
 	}
 
 	public Set<MediaRegistration<?>> getRegisteredMediaTypes() {
-		return new HashSet<MediaRegistration<?>>(registrations);
+		return new HashSet<MediaRegistration<?>>(mediaRegs);
 	}
 
 	/*

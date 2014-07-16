@@ -12,7 +12,7 @@ public class EditOAuthOperation extends
 	@Override
 	protected OAuthConfig createUnit() {
 		OAuthConfig o = new OAuthConfig();
-		o.resetConfiguration();
+		o.resetInternalConfiguration();
 		return o;
 	}
 

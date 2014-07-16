@@ -19,8 +19,8 @@ import edu.umd.rhsmith.diads.meater.core.app.MEaterException;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterMain;
 import edu.umd.rhsmith.diads.meater.core.app.ModuleAlreadyLoadedException;
 import edu.umd.rhsmith.diads.meater.core.app.ModuleInstantiationException;
-import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfigContainer;
 import edu.umd.rhsmith.diads.meater.core.config.components.media.MediaPathConfig;
+import edu.umd.rhsmith.diads.meater.core.config.container.InstanceConfigContainer;
 import edu.umd.rhsmith.diads.meater.core.config.setup.MEaterSetupConsole;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.module.AddModuleOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.module.ListModulesOperation;
@@ -74,7 +74,7 @@ public class MEaterConfig extends ConfigUnit {
 			throws ConfigurationException, MEaterException {
 		XMLConfiguration xml = new XMLConfiguration(filename);
 		MEaterConfig config = new MEaterConfig();
-		config.resetConfiguration();
+		config.resetInternalConfiguration();
 		config.loadConfigurationFrom(xml);
 		return config.createMEaterMain(filename);
 	}
@@ -91,7 +91,7 @@ public class MEaterConfig extends ConfigUnit {
 
 	private final MEaterGeneralConfig generalSettings;
 	private final Map<String, ConfigModule> modules;
-	private final ComponentConfigContainer pathContainer;
+	private final InstanceConfigContainer<MediaPathConfig> pathContainer;
 
 	public MEaterConfig() {
 		super();
@@ -100,17 +100,17 @@ public class MEaterConfig extends ConfigUnit {
 		this.modules = new TreeMap<String, ConfigModule>();
 
 		// media paths
-		this.pathContainer = new ComponentConfigContainer(UINAME_PATHS,
-				UIDESC_PATHS);
-		this.pathContainer.registerComponentType(MediaPathConfig.REGISTRATION);
+		this.pathContainer = new InstanceConfigContainer<MediaPathConfig>(
+				UINAME_PATHS, UIDESC_PATHS);
+		this.pathContainer.registerConfigType(MediaPathConfig.REGISTRATION);
 
 		// nav to general
 		this.registerSetupConsoleOperation(new SetupPropertiesOperation(
 				OP_UINAME_GENERAL, OP_SHORTNAME_GENERAL, this.generalSettings));
 
 		// nav to media paths
-		this.registerSetupConsoleOperation(new NavToOperation(
-				OP_UINAME_PATHS, OP_SHORTNAME_PATHS, this.pathContainer));
+		this.registerSetupConsoleOperation(new NavToOperation(OP_UINAME_PATHS,
+				OP_SHORTNAME_PATHS, this.pathContainer));
 
 		// edit sql things
 		this.registerSetupConsoleOperation(new EditSqlOperation());
@@ -126,7 +126,7 @@ public class MEaterConfig extends ConfigUnit {
 		return this.generalSettings;
 	}
 
-	public ComponentConfigContainer getPathContainer() {
+	public InstanceConfigContainer<MediaPathConfig> getPathContainer() {
 		return pathContainer;
 	}
 
@@ -137,7 +137,9 @@ public class MEaterConfig extends ConfigUnit {
 		for (ConfigModule module : this.getModules()) {
 			module.addTo(main);
 		}
-		this.pathContainer.instantiateComponents(main.getComponentManager());
+		for (MediaPathConfig cc : this.pathContainer.getInstanceConfigs()) {
+			cc.createComponentInstance(main.getComponentManager());
+		}
 
 		return main;
 	}
@@ -174,7 +176,7 @@ public class MEaterConfig extends ConfigUnit {
 		}
 
 		this.modules.put(module.getModuleName(), module);
-		module.resetConfiguration();
+		module.resetInternalConfiguration();
 
 		return module;
 	}
@@ -269,29 +271,29 @@ public class MEaterConfig extends ConfigUnit {
 	 */
 
 	@Override
-	public void resetConfiguration() {
+	public void resetInternalConfiguration() {
 		// do general settings
-		this.generalSettings.resetConfiguration();
+		this.generalSettings.resetInternalConfiguration();
 
 		// do all modules
 		for (ConfigModule m : this.modules.values()) {
-			m.resetConfiguration();
+			m.resetInternalConfiguration();
 		}
 	}
 
 	@Override
-	protected void loadConfigurationPropertiesFrom(
+	protected void loadInternalConfigurationFrom(
 			HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
 		this.loadModuleClassesFrom(config);
 		this.loadModulesFrom(config);
-
+		
 		this.generalSettings.loadConfigurationFrom(config);
 		this.pathContainer.loadConfigurationFrom(config);
 	}
 
 	@Override
-	protected void saveConfigurationPropertiesTo(
+	protected void saveInternalConfigurationTo(
 			HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
 		this.saveModuleClassesTo(config);

@@ -1,19 +1,20 @@
-package edu.umd.rhsmith.diads.meater.core.config.setup.ops.component;
+package edu.umd.rhsmith.diads.meater.core.config.setup.ops.instance;
 
-import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
-import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfigContainer;
-import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfigInstantiationException;
+import edu.umd.rhsmith.diads.meater.core.config.container.ConfigInstantiationException;
+import edu.umd.rhsmith.diads.meater.core.config.container.InstanceConfig;
+import edu.umd.rhsmith.diads.meater.core.config.container.InstanceConfigContainer;
 import edu.umd.rhsmith.diads.meater.core.config.setup.MEaterSetupConsole;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.SetupConsoleOperation;
 
-public class AddComponentOperation extends SetupConsoleOperation {
+public class AddInstanceOperation<I extends InstanceConfig> extends
+		SetupConsoleOperation {
 
-	public static final String OP_SHORTNAME = "add-component";
-	public static final String OP_UINAME = "Add component instance to current unit";
+	public static final String OP_SHORTNAME = "add-instance";
+	public static final String OP_UINAME = "Add instance to current unit";
 
-	private final ComponentConfigContainer owner;
+	private final InstanceConfigContainer<I> owner;
 
-	public AddComponentOperation(ComponentConfigContainer owner) {
+	public AddInstanceOperation(InstanceConfigContainer<I> owner) {
 		super(OP_UINAME, OP_SHORTNAME);
 
 		this.owner = owner;
@@ -26,32 +27,32 @@ public class AddComponentOperation extends SetupConsoleOperation {
 		String typeName = setup.getConsole().prompt(false);
 
 		// verify that we can in fact create such a thing
-		boolean supported = this.owner.supportsComponentType(typeName);
+		boolean supported = this.owner.supportsConfigType(typeName);
 		if (!supported) {
 			setup.getConsole().error(MSG_ERR_COULDNT_INSTANTIATE_FMT, typeName);
 			return;
 		}
 		setup.getConsole().say(MSG_CONFIRM_FMT, typeName,
-				this.owner.getComponentTypeDescription(typeName));
+				this.owner.getConfigTypeDescription(typeName));
 
 		// get name of new instance
 		setup.getConsole().say(MSG_PROMPT_INSTANCE);
 		String instanceName = setup.getConsole().prompt(false);
 
-		// try to instantiate component
-		ComponentConfig config;
+		// try to instantiate instance
+		I config;
 		try {
-			config = this.owner.addNewComponentConfiguration(typeName);
-		} catch (ComponentConfigInstantiationException e) {
+			config = this.owner.addNewConfigUnit(typeName);
+		} catch (ConfigInstantiationException e) {
 			setup.getConsole().error(MSG_ERR_COULDNT_INSTANTIATE_FMT, typeName,
-					ListComponentTypesOperation.OP_SHORTNAME);
+					ListInstanceTypesOperation.OP_SHORTNAME);
 			return;
 		}
 
 		// set its instance name as the user desired
 		config.setInstanceName(instanceName);
 
-		// some components might have an operation to execute on creation
+		// some instances might have an operation to execute on creation
 		SetupConsoleOperation c = config.getCreationSetupConsoleOperation();
 		if (c != null) {
 			c.go(setup);
@@ -68,9 +69,9 @@ public class AddComponentOperation extends SetupConsoleOperation {
 	 * --------------------------------
 	 */
 
-	private static final String MSG_PROMPT_TYPE = "Please enter the name of the component type you would like to add";
+	private static final String MSG_PROMPT_TYPE = "Please enter the name of the instance type you would like to add";
 	private static final String MSG_CONFIRM_FMT = "Creating new %s";
-	private static final String MSG_PROMPT_INSTANCE = "Name of new component instance?";
+	private static final String MSG_PROMPT_INSTANCE = "Name of new instance?";
 	private static final String MSG_ERR_COULDNT_INSTANTIATE_FMT = "Current unit does not support creating configuration type '%s' (use '%s' to list supported configuration types)";
 	private static final String MSG_SUCCESS_FMT = "New %s successfully added";
 

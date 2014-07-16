@@ -9,7 +9,7 @@ public class MEaterCommon extends ConfigModule {
 	public MEaterCommon() {
 		super("Common");
 
-		this.registerComponentType(PySentimentAnalyzerConfig.class);
+		this.registerConfigType(PySentimentAnalyzerConfig.class);
 		this.registerMediaType(SentimentAnalyzable.class);
 	}
 

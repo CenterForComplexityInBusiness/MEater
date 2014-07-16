@@ -70,7 +70,7 @@ public class MEaterSetupConsole implements Runnable {
 		this.mainConfigurationFilename = mainFilename;
 
 		this.mainConfiguration = new MEaterConfig();
-		this.mainConfiguration.resetConfiguration();
+		this.mainConfiguration.resetInternalConfiguration();
 
 		this.navStack = new LinkedList<ConfigUnit>();
 

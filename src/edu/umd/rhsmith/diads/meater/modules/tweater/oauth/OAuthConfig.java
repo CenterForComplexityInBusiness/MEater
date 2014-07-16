@@ -67,7 +67,7 @@ public class OAuthConfig extends ConfigUnit implements OAuthInfo {
 	}
 
 	@Override
-	public void resetConfiguration() {
+	public void resetInternalConfiguration() {
 		this.consumerKey = TWEATER_CONSUMER_KEY;
 		this.consumerSecret = TWEATER_CONSUMER_SECRET;
 		this.accessToken = "";
@@ -75,7 +75,7 @@ public class OAuthConfig extends ConfigUnit implements OAuthInfo {
 	}
 
 	@Override
-	protected void loadConfigurationPropertiesFrom(
+	protected void loadInternalConfigurationFrom(
 			HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
 		this.consumerKey = config
@@ -89,7 +89,7 @@ public class OAuthConfig extends ConfigUnit implements OAuthInfo {
 	}
 
 	@Override
-	protected void saveConfigurationPropertiesTo(
+	protected void saveInternalConfigurationTo(
 			HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
 		config.setProperty(CKEY_CONSUMER_KEY, this.consumerKey);

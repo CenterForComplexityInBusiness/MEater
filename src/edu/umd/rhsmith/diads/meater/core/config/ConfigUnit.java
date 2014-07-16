@@ -1,15 +1,14 @@
 package edu.umd.rhsmith.diads.meater.core.config;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.configuration.HierarchicalConfiguration;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
+import edu.umd.rhsmith.diads.meater.core.config.props.ConfigProperty;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.SetupConsoleOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.ResetOperation;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertiesEligible;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertiesOperation;
 
 public abstract class ConfigUnit {
@@ -17,21 +16,17 @@ public abstract class ConfigUnit {
 	private String uiName;
 	private String uiDescription;
 
-	private final Collection<SetupConsoleOperation> setupConsoleOperations;
+	private final List<SetupConsoleOperation> setupConsoleOperations;
+	private final List<ConfigProperty<?>> configProperties;
 
 	public ConfigUnit() {
-		// treemap so we get name-sorting for free
 		this.setupConsoleOperations = new LinkedList<SetupConsoleOperation>();
+		this.configProperties = new LinkedList<ConfigProperty<?>>();
 
 		// everyone can reset
 		this.registerSetupConsoleOperation(new ResetOperation(this));
-
-		// only the eligible have auto-setup
-		if (this.getClass().isAnnotationPresent(SetupPropertiesEligible.class)) {
-			SetupPropertiesOperation setupProperies = new SetupPropertiesOperation(
-					this);
-			this.registerSetupConsoleOperation(setupProperies);
-		}
+		// everyone can set up
+		this.registerSetupConsoleOperation(new SetupPropertiesOperation(this));
 
 		this.uiName = null;
 		this.uiDescription = null;
@@ -69,8 +64,26 @@ public abstract class ConfigUnit {
 	 * --------------------------------
 	 */
 
-	protected void registerSetupConsoleOperation(SetupConsoleOperation operation) {
-		this.setupConsoleOperations.add(operation);
+	public void registerConfigProperty(ConfigProperty<?> prop)
+			throws NullPointerException {
+		if (prop == null) {
+			throw new NullPointerException();
+		}
+
+		this.configProperties.add(prop);
+	}
+
+	public List<ConfigProperty<?>> getConfigProperties() {
+		return new LinkedList<ConfigProperty<?>>(this.configProperties);
+	}
+
+	public void registerSetupConsoleOperation(SetupConsoleOperation op)
+			throws NullPointerException {
+		if (op == null) {
+			throw new NullPointerException();
+		}
+
+		this.setupConsoleOperations.add(op);
 	}
 
 	public List<SetupConsoleOperation> getSetupOperations() {
@@ -84,27 +97,55 @@ public abstract class ConfigUnit {
 	 * --------------------------------
 	 */
 
-	public abstract void resetConfiguration();
+	public final void resetConfiguration() {
+		this.resetProperties();
+		this.resetInternalConfiguration();
+	}
 
 	public final void loadConfigurationFrom(HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
-		// does stuff go here?? maybe later
-		this.loadConfigurationPropertiesFrom(config);
+		this.loadInternalConfigurationFrom(config);
+		this.loadPropertiesFrom(config);
 	}
 
 	public final void saveConfigurationTo(HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
-		// does stuff go here?? maybe later
-		this.saveConfigurationPropertiesTo(config);
+		this.saveInternalConfigurationTo(config);
+		this.savePropertiesTo(config);
 	}
 
-	protected abstract void loadConfigurationPropertiesFrom(
-			HierarchicalConfiguration config)
-			throws MEaterConfigurationException;
+	private void resetProperties() {
+		for (ConfigProperty<?> prop : this.configProperties) {
+			prop.reset();
+		}
+	}
 
-	protected abstract void saveConfigurationPropertiesTo(
+	private void loadPropertiesFrom(HierarchicalConfiguration config) {
+		for (ConfigProperty<?> prop : this.configProperties) {
+			prop.loadVal(config);
+		}
+	}
+
+	private void savePropertiesTo(HierarchicalConfiguration config) {
+		for (ConfigProperty<?> prop : this.configProperties) {
+			prop.saveVal(config);
+		}
+	}
+
+	protected void resetInternalConfiguration() {
+		// override in subclass if you want
+	}
+
+	protected void loadInternalConfigurationFrom(
 			HierarchicalConfiguration config)
-			throws MEaterConfigurationException;
+			throws MEaterConfigurationException {
+		// override in subclass if you want
+	}
+
+	protected void saveInternalConfigurationTo(HierarchicalConfiguration config)
+			throws MEaterConfigurationException {
+		// override in subclass if you want
+	}
 
 	/*
 	 * --------------------------------

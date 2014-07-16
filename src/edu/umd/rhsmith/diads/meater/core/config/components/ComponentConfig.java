@@ -9,39 +9,19 @@ import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
 import edu.umd.rhsmith.diads.meater.core.app.components.ComponentInitializer;
 import edu.umd.rhsmith.diads.meater.core.app.components.ComponentManager;
-import edu.umd.rhsmith.diads.meater.core.config.ConfigUnit;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.SetupConsoleOperation;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.component.RenameComponentOperation;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.ProcessorListOperation;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.SourceListOperation;
+import edu.umd.rhsmith.diads.meater.core.config.container.InstanceConfig;
 
-public abstract class ComponentConfig extends ConfigUnit implements
+public abstract class ComponentConfig extends InstanceConfig implements
 		ComponentInitializer {
-
-	public static final String DEFAULT_INSTANCE_NAME = "untitled";
-	public static final String CKEY_INSTANCE_NAME = "instanceName";
-	public static final String DEFAULT_REGISTERED_TYPE_NAME = "Component";
-
-	private String registeredTypeName;
-	private String instanceName;
 
 	private final Map<String, Class<?>> mediaSourceNames;
 	private final Map<String, Class<?>> mediaProcessorNames;
 
-	private SetupConsoleOperation creationOperation;
-
 	public ComponentConfig() {
 		super();
 
-		this.registeredTypeName = DEFAULT_REGISTERED_TYPE_NAME;
-		this.instanceName = DEFAULT_INSTANCE_NAME;
-
 		this.mediaSourceNames = new HashMap<String, Class<?>>();
 		this.mediaProcessorNames = new HashMap<String, Class<?>>();
-
-		this.registerSetupConsoleOperation(new RenameComponentOperation(this));
-		this.registerSetupConsoleOperation(new SourceListOperation(this));
-		this.registerSetupConsoleOperation(new ProcessorListOperation(this));
 	}
 
 	public final Component createComponentInstance(ComponentManager mgr)
@@ -64,30 +44,6 @@ public abstract class ComponentConfig extends ConfigUnit implements
 	 * General getters/setters
 	 * --------------------------------
 	 */
-
-	public final String getRegisteredTypeName() {
-		return registeredTypeName;
-	}
-
-	final void setRegisteredTypeName(String registeredTypeName) {
-		if (registeredTypeName == null) {
-			throw new NullPointerException();
-		}
-
-		this.registeredTypeName = registeredTypeName;
-	}
-
-	public String getInstanceName() {
-		return this.instanceName;
-	}
-
-	public void setInstanceName(String instanceName) {
-		if (instanceName == null) {
-			throw new NullPointerException();
-		}
-
-		this.instanceName = instanceName;
-	}
 
 	/*
 	 * --------------------------------
@@ -144,21 +100,20 @@ public abstract class ComponentConfig extends ConfigUnit implements
 	 * --------------------------------
 	 */
 
-	protected void loadConfigurationPropertiesFrom(
+	protected void loadInternalConfigurationFrom(
 			HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
-		this.setInstanceName(config.getString(CKEY_INSTANCE_NAME, this
-				.getInstanceName()));
+		super.loadInternalConfigurationFrom(config);
 	}
 
 	@Override
-	public void resetConfiguration() {
+	public void resetInternalConfiguration() {
 	}
 
-	protected void saveConfigurationPropertiesTo(
+	protected void saveInternalConfigurationTo(
 			HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
-		config.setProperty(CKEY_INSTANCE_NAME, this.getInstanceName());
+		super.saveInternalConfigurationTo(config);
 	}
 
 	/*
@@ -166,15 +121,6 @@ public abstract class ComponentConfig extends ConfigUnit implements
 	 * Setup operations
 	 * --------------------------------
 	 */
-
-	public final SetupConsoleOperation getCreationSetupConsoleOperation() {
-		return creationOperation;
-	}
-
-	public final void setCreationSetupConsoleOperation(
-			SetupConsoleOperation creationOperation) {
-		this.creationOperation = creationOperation;
-	}
 
 	/*
 	 * --------------------------------

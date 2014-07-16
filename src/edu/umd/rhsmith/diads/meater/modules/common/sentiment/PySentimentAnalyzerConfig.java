@@ -1,27 +1,17 @@
 package edu.umd.rhsmith.diads.meater.modules.common.sentiment;
 
-import org.apache.commons.configuration.HierarchicalConfiguration;
-
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertiesEligible;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupProperty;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertyTypes;
+import edu.umd.rhsmith.diads.meater.core.config.props.StringProperty;
 
-@SetupPropertiesEligible
 public class PySentimentAnalyzerConfig extends ComponentConfig implements
 		PySentimentAnalyzerInitializer {
 
-	// values taken from TwEater
-	private static final String CKEY_FEATURES_FILENAME = "features";
-	private static final String DEFAULT_FEATURES_FILENAME = "features.pickle";
-	private static final String CKEY_CLASSIFIER_FILENAME = "classifer";
-	private static final String DEFAULT_CLASSIFIER_FILENAME = "classifier.pickle";
-
 	public PySentimentAnalyzerConfig() {
 		super();
-
 		this.registerMediaProcessorName("", SentimentAnalyzable.class);
+		this.registerConfigProperty(classiferFilename);
+		this.registerConfigProperty(featuresFilename);
 	}
 
 	@Override
@@ -37,21 +27,28 @@ public class PySentimentAnalyzerConfig extends ComponentConfig implements
 	 */
 
 	// analyzer properties
-	@SetupProperty(propertyType = SetupPropertyTypes.STRING,
-			uiName = "Feature-set filename",
-			uiDescription = "Filename of the serialized feature-set which the sentiment analyzer will load")
-	private String featuresFilename;
-	@SetupProperty(propertyType = SetupPropertyTypes.STRING,
-			uiName = "Classifier filename",
-			uiDescription = "Filename of the serialized classifier which the sentiment analyzer will load")
-	private String classiferFilename;
+
+	private static final String CKEY_FEATURES_FILENAME = "features";
+	private static final String DEFAULT_FEATURES_FILENAME = "features.pickle";
+	private static final String UINAME_FEATURES_FILENAME = "Feature-set filename";
+	private static final String UIDESC_FEATURES_FILENAME = "Filename of the serialized feature-set which the sentiment analyzer will load";
+	private final StringProperty featuresFilename = new StringProperty(
+			CKEY_FEATURES_FILENAME, DEFAULT_FEATURES_FILENAME,
+			UINAME_FEATURES_FILENAME, UIDESC_FEATURES_FILENAME);
+	private static final String CKEY_CLASSIFIER_FILENAME = "classifer";
+	private static final String DEFAULT_CLASSIFIER_FILENAME = "classifier.pickle";
+	private static final String UINAME_CLASSIFIER_FILENAME = "Classifier filename";
+	private static final String UIDESC_CLASSIFIER_FILENAME = "Filename of the serialized classifier which the sentiment analyzer will load";
+	private final StringProperty classiferFilename = new StringProperty(
+			CKEY_CLASSIFIER_FILENAME, DEFAULT_CLASSIFIER_FILENAME,
+			UINAME_CLASSIFIER_FILENAME, UIDESC_CLASSIFIER_FILENAME);
 
 	public String getClassifierFilename() {
-		return this.classiferFilename;
+		return this.classiferFilename.getVal();
 	}
 
 	public String getFeaturesFilename() {
-		return this.featuresFilename;
+		return this.featuresFilename.getVal();
 	}
 
 	/*
@@ -59,34 +56,6 @@ public class PySentimentAnalyzerConfig extends ComponentConfig implements
 	 * Config operations
 	 * --------------------------------
 	 */
-
-	@Override
-	public void resetConfiguration() {
-		this.classiferFilename = DEFAULT_CLASSIFIER_FILENAME;
-		this.featuresFilename = DEFAULT_FEATURES_FILENAME;
-	}
-
-	@Override
-	protected void loadConfigurationPropertiesFrom(
-			HierarchicalConfiguration config)
-			throws MEaterConfigurationException {
-		super.loadConfigurationPropertiesFrom(config);
-
-		this.classiferFilename = config.getString(CKEY_CLASSIFIER_FILENAME,
-				this.classiferFilename);
-		this.featuresFilename = config.getString(CKEY_FEATURES_FILENAME,
-				this.classiferFilename);
-	}
-
-	@Override
-	protected void saveConfigurationPropertiesTo(
-			HierarchicalConfiguration config)
-			throws MEaterConfigurationException {
-		super.saveConfigurationPropertiesTo(config);
-
-		config.setProperty(CKEY_CLASSIFIER_FILENAME, this.classiferFilename);
-		config.setProperty(CKEY_FEATURES_FILENAME, this.featuresFilename);
-	}
 
 	/*
 	 * --------------------------------

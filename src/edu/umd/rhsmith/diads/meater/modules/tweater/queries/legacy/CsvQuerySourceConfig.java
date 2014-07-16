@@ -1,15 +1,10 @@
 package edu.umd.rhsmith.diads.meater.modules.tweater.queries.legacy;
 
-import org.apache.commons.configuration.HierarchicalConfiguration;
-
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertiesEligible;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupProperty;
-import edu.umd.rhsmith.diads.meater.core.config.setup.ops.unit.SetupPropertyTypes;
+import edu.umd.rhsmith.diads.meater.core.config.props.StringProperty;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QuerySourceConfig;
 
-@SetupPropertiesEligible
 public class CsvQuerySourceConfig extends QuerySourceConfig implements
 		CsvQuerySourceInitializer {
 
@@ -21,8 +16,7 @@ public class CsvQuerySourceConfig extends QuerySourceConfig implements
 	}
 
 	@Override
-	public Component instantiateComponent()
-			throws MEaterConfigurationException {
+	public Component instantiateComponent() throws MEaterConfigurationException {
 		return new CsvQuerySource(this);
 	}
 
@@ -34,13 +28,13 @@ public class CsvQuerySourceConfig extends QuerySourceConfig implements
 
 	private static final String CKEY_FILENAME = "filename";
 	private static final String DEFAULT_FILENAME = "queries.csv";
-
-	@SetupProperty(propertyType = SetupPropertyTypes.STRING,
-			uiName = "input filename")
-	private String filename;
+	private static final String UINAME_FILENAME = "input filename";
+	private static final String UIDESC_FILENAME = "";
+	private final StringProperty filename = new StringProperty(CKEY_FILENAME,
+			DEFAULT_FILENAME, UINAME_FILENAME, UIDESC_FILENAME);
 
 	public String getFilename() {
-		return this.filename;
+		return this.filename.getVal();
 	}
 
 	/*
@@ -59,27 +53,5 @@ public class CsvQuerySourceConfig extends QuerySourceConfig implements
 	 * Config operations
 	 * --------------------------------
 	 */
-
-	@Override
-	public void resetConfiguration() {
-		super.resetConfiguration();
-		this.filename = DEFAULT_FILENAME;
-	}
-
-	@Override
-	protected void loadConfigurationPropertiesFrom(
-			HierarchicalConfiguration config)
-			throws MEaterConfigurationException {
-		super.loadConfigurationPropertiesFrom(config);
-		this.filename = config.getString(CKEY_FILENAME, this.filename);
-	}
-
-	@Override
-	protected void saveConfigurationPropertiesTo(
-			HierarchicalConfiguration config)
-			throws MEaterConfigurationException {
-		super.saveConfigurationPropertiesTo(config);
-		config.setProperty(CKEY_FILENAME, this.filename);
-	}
 
 }

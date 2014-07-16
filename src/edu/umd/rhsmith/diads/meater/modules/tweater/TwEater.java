@@ -30,10 +30,10 @@ public class TwEater extends ConfigModule {
 		this.registerMediaType(QueryTrack.class);
 		this.registerMediaType(QueryPhrase.class);
 
-		this.registerComponentType(StreamQuerierConfig.class);
-		this.registerComponentType(TimelineCollectorConfig.class);
-		this.registerComponentType(CsvQuerySourceConfig.class);
-		this.registerComponentType(CsvStatusEaterConfig.class);
+		this.registerConfigType(StreamQuerierConfig.class);
+		this.registerConfigType(TimelineCollectorConfig.class);
+		this.registerConfigType(CsvQuerySourceConfig.class);
+		this.registerConfigType(CsvStatusEaterConfig.class);
 	}
 
 	@Override
