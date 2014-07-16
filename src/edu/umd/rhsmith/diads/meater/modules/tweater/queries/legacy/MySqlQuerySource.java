@@ -25,7 +25,7 @@ import edu.umd.rhsmith.diads.meater.util.Util;
  * 
  * @author dmonner
  */
-public class MySQLQueryBuilder extends QuerySource {
+public class MySqlQuerySource extends QuerySource {
 
 	private final String dbName;
 
@@ -38,12 +38,13 @@ public class MySQLQueryBuilder extends QuerySource {
 	 * The SQL WHERE string that specifies query groups
 	 */
 	private final String where;
+	
 	/**
 	 * The maximum number of tries to try a transaction before giving up
 	 */
 	private final int maxtries = 5;
 
-	public MySQLQueryBuilder(MySqlQuerySourceInitializer init)
+	public MySqlQuerySource(MySqlQuerySourceInitializer init)
 			throws MEaterConfigurationException {
 		super(init);
 
@@ -66,8 +67,7 @@ public class MySQLQueryBuilder extends QuerySource {
 				.getDataSource(dbName);
 		if (this.ds == null) {
 			throw new MEaterConfigurationException(this.messageString(
-					"Couldn't get data source from manager with name '%s'",
-					dbName));
+					MSG_ERR_NOSOURCE_FMT, dbName));
 		}
 	}
 
@@ -78,7 +78,7 @@ public class MySQLQueryBuilder extends QuerySource {
 	 */
 	@Override
 	public List<QueryItemTime> getQueriesFromSource() {
-		logFine("Beginning MySQLQueryBuilder update...");
+		logFine(MSG_UPDATE_BEGIN);
 		final List<QueryItemTime> all = new LinkedList<QueryItemTime>();
 		boolean querySucceeded = false;
 
@@ -94,6 +94,7 @@ public class MySQLQueryBuilder extends QuerySource {
 			}
 
 			if (conn == null) {
+				logWarning(MSG_ERR_COULDNT_CONNECT);
 				return null;
 			}
 
@@ -107,7 +108,7 @@ public class MySQLQueryBuilder extends QuerySource {
 
 			while (rs.next()) {
 				all.add(new QueryItemTime(new QueryTrack(rs
-						.getInt("query_group_no"), rs
+						.getInt("query_track_no"), rs
 						.getString("query_track_string")), rs
 						.getLong("query_start_time"), rs
 						.getLong("query_end_time")));
@@ -118,7 +119,6 @@ public class MySQLQueryBuilder extends QuerySource {
 					.executeQuery("SELECT query_group_no, query_phrase_no, query_phrase_string, query_start_time, query_end_time "
 							+ "FROM query_group INNER JOIN query_phrase USING (query_group_no)"
 							+ where + ";");
-
 			while (rs.next()) {
 				all.add(new QueryItemTime(new QueryPhrase(rs
 						.getInt("query_group_no"), rs
@@ -135,7 +135,7 @@ public class MySQLQueryBuilder extends QuerySource {
 
 			while (rs.next()) {
 				all.add(new QueryItemTime(
-						new QueryFollow(rs.getInt("query_group_no"), rs
+						new QueryFollow(rs.getInt("query_follow_no"), rs
 								.getLong("query_user_id")), rs
 								.getLong("query_start_time"), rs
 								.getLong("query_end_time")));
@@ -159,7 +159,7 @@ public class MySQLQueryBuilder extends QuerySource {
 				QueryLocation ql = null;
 
 				try {
-					ql = new QueryLocation(rs.getInt("query_group_no"),
+					ql = new QueryLocation(rs.getInt("query_location_no"),
 							pointSW, pointNE);
 				} catch (IllegalArgumentException ex) {
 					logWarning("Unable to construct location query #"
@@ -202,11 +202,24 @@ public class MySQLQueryBuilder extends QuerySource {
 		}
 
 		if (querySucceeded) {
-			logFine("Completed MySQLQueryBuilder update.");
+			logFine(MSG_UPDATED);
 			return all;
 		} else {
-			logWarning("MySQLQueryBuilder update FAILED!");
+			logWarning(MSG_ERR_UPDATE_FAILED);
 			return null;
 		}
 	}
+
+	/*
+	 * --------------------------------
+	 * Messages
+	 * --------------------------------
+	 */
+
+	private static final String MSG_UPDATED = "Completed MySQLQueryBuilder update.";
+	private static final String MSG_ERR_UPDATE_FAILED = "MySQLQueryBuilder update FAILED!";
+	private static final String MSG_UPDATE_BEGIN = "Beginning MySQLQueryBuilder update...";
+	private static final String MSG_ERR_NOSOURCE_FMT = "Couldn't get data source from manager with name '%s'";
+	private static final String MSG_ERR_COULDNT_CONNECT = "Unable to make connection to database";
+
 }

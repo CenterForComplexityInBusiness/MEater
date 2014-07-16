@@ -13,6 +13,8 @@ public class CsvQuerySourceConfig extends QuerySourceConfig implements
 
 	public CsvQuerySourceConfig() {
 		super();
+
+		this.registerConfigProperty(filename);
 	}
 
 	@Override
