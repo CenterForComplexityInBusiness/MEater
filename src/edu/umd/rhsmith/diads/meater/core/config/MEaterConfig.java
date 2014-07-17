@@ -102,7 +102,7 @@ public class MEaterConfig extends ConfigUnit {
 		// media paths
 		this.pathContainer = new InstanceConfigContainer<MediaPathConfig>(
 				UINAME_PATHS, UIDESC_PATHS);
-		this.pathContainer.registerConfigType(MediaPathConfig.REGISTRATION);
+		this.pathContainer.registerConfigType(MediaPathConfig.class);
 
 		// nav to general
 		this.registerSetupConsoleOperation(new SetupPropertiesOperation(

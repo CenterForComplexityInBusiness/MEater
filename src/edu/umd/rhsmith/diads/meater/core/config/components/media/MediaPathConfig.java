@@ -12,8 +12,6 @@ import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaClassNotFound
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaPath;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaPathInitializer;
 import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
-import edu.umd.rhsmith.diads.meater.core.config.container.ConfigInstantiationException;
-import edu.umd.rhsmith.diads.meater.core.config.container.InstanceConfigRegistration;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathDescriptionOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathProcessorAddOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathProcessorListOperation;
@@ -300,24 +298,6 @@ public final class MediaPathConfig extends ComponentConfig {
 
 	public static final String TNAME = "MediaPath";
 	public static final String TDESC = "Define a mapping of media source inputs to media processors";
-
-	public static final InstanceConfigRegistration<MediaPathConfig> REGISTRATION = new InstanceConfigRegistration<MediaPathConfig>() {
-		@Override
-		public String getName() {
-			return TNAME;
-		}
-
-		@Override
-		public String getDescription() {
-			return TDESC;
-		}
-
-		@Override
-		public MediaPathConfig createConfig()
-				throws ConfigInstantiationException {
-			return new MediaPathConfig();
-		}
-	};
 
 	/*
 	 * --------------------------------
