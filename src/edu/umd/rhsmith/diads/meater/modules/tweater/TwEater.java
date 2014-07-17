@@ -22,6 +22,7 @@ public class TwEater extends ConfigModule {
 		super("TwEater");
 
 		this.registerSetupConsoleOperation(new EditOAuthOperation());
+		this.registerSetupConsoleOperation(new SetupLegacyDbOperation());
 
 		this.registerMediaType(StatusData.class);
 		this.registerMediaType(UserStatusData.class);
