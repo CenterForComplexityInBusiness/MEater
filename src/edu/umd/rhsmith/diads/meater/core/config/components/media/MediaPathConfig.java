@@ -14,6 +14,7 @@ import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaPathInitializ
 import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
 import edu.umd.rhsmith.diads.meater.core.config.container.ConfigInstantiationException;
 import edu.umd.rhsmith.diads.meater.core.config.container.InstanceConfigRegistration;
+import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathDescriptionOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathProcessorAddOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathProcessorListOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathProcessorRemoveOperation;
@@ -28,6 +29,7 @@ public final class MediaPathConfig extends ComponentConfig {
 	public static final String CKEY_PROCESSOR = "processor";
 	public static final String CKEY_MEDIA_CLASS = "mediaClass";
 	public static final String CKEY_REJECTABLE = "rejectable";
+	public static final String CKEY_DESCR = "description";
 
 	private Class<?> mediaClass;
 	private final Collection<String> sources;
@@ -54,11 +56,14 @@ public final class MediaPathConfig extends ComponentConfig {
 		this.registerSetupConsoleOperation(new PathSourceAddOperation(this));
 		this.registerSetupConsoleOperation(new PathSourceRemoveOperation(this));
 		this.registerSetupConsoleOperation(new PathSourceListOperation(this));
-
+		
 		// media types
 		this.setCreationSetupConsoleOperation(new PathSetMediaOperation(this));
 		this.registerSetupConsoleOperation(this
 				.getCreationSetupConsoleOperation());
+
+		// misc
+		this.registerSetupConsoleOperation(new PathDescriptionOperation(this));
 	}
 
 	@Override
@@ -218,6 +223,7 @@ public final class MediaPathConfig extends ComponentConfig {
 		this.sources.clear();
 		this.processors.clear();
 		this.rejectable = false;
+		this.description = "";
 	}
 
 	@Override
@@ -226,6 +232,7 @@ public final class MediaPathConfig extends ComponentConfig {
 			throws MEaterConfigurationException {
 		super.loadInternalConfigurationFrom(config);
 
+		this.description = config.getString(CKEY_DESCR, this.description);
 		this.rejectable = config.getBoolean(CKEY_REJECTABLE, this.rejectable);
 
 		for (String s : config.getStringArray(CKEY_SOURCE)) {
@@ -244,6 +251,7 @@ public final class MediaPathConfig extends ComponentConfig {
 		super.saveInternalConfigurationTo(config);
 
 		config.setProperty(CKEY_REJECTABLE, this.rejectable);
+		config.setProperty(CKEY_DESCR, this.description);
 
 		for (String s : this.sources) {
 			config.addProperty(CKEY_SOURCE, s);
