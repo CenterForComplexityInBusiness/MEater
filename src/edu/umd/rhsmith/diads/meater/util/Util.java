@@ -1,6 +1,11 @@
 package edu.umd.rhsmith.diads.meater.util;
 
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
@@ -183,5 +188,88 @@ public class Util {
 			first = false;
 		}
 		return b.toString();
+	}
+
+	/**
+	 * The number of milliseconds before an HTTP connection is considered to
+	 * have timed out.
+	 */
+	private static final int CONN_TIMEOUT_MS = 10 * 1000;
+
+	/**
+	 * A utility method that takes any URL and follows all redirects recursively
+	 * until the true target
+	 * is reached. Useful for finding the true destination of URL-shortened
+	 * links.
+	 * 
+	 * @param urlStr
+	 *            A URL, possibly shortened.
+	 * @return The true destination URL.
+	 */
+	public static String expandUrl(final String urlStr)
+	{
+		URLConnection conn = null;
+
+		try
+		{
+			// to expand the URL, just open a connection and follow it!
+			final URL inputURL = new URL(urlStr);
+			conn = inputURL.openConnection();
+			conn.setConnectTimeout(CONN_TIMEOUT_MS);
+			conn.setReadTimeout(CONN_TIMEOUT_MS);
+
+			// this is necessary to update the header fields and can lead to
+			// StringIndexOutOfBoundsException if bad page returned
+			conn.getHeaderFields();
+
+			return conn.getURL().toString();
+		}
+		catch(final SocketTimeoutException ex)
+		{
+			// log.info("Socket timeout when trying to access " + urlStr);
+		}
+		catch(final NullPointerException ex)
+		{
+			// log.info("Null URL");
+		}
+		catch(final StringIndexOutOfBoundsException ex)
+		{
+			/*
+			String badURL = urlStr;
+
+			try
+			{
+				badURL = conn.getURL().toString();
+			}
+			catch(final Exception ex2)
+			{
+				// log.severe(Util.traceMessage(ex2));
+			}
+
+			// log.info("Header issue with URL: " + badURL);
+			 */
+		}
+		catch(final IllegalArgumentException ex)
+		{
+			if(ex.getMessage().contains("host = null"))
+			{
+				// log.info("Null hostname in URL.");
+			}
+			else
+			{
+				// log.info("URL Error: " + ex.getMessage());
+			}
+		}
+		catch(final MalformedURLException ex)
+		{
+			// log.info("Invalid URL: " + urlStr);
+		}
+		catch(final IOException ex)
+		{
+			// log.info("Cannot connect to URL: " + urlStr);
+		}
+		
+
+		return urlStr;
 	}
 }

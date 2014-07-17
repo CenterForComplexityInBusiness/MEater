@@ -116,13 +116,11 @@ public class CsvStatusEater extends StatusEater {
 
 	@Override
 	protected void doStartupRoutine() throws ControlException {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	protected void doShutdownRoutine() {
-		// TODO Auto-generated method stub
 
 	}
 

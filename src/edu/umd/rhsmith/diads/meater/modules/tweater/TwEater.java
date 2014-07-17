@@ -12,6 +12,7 @@ import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryTrack;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.legacy.CsvQuerySourceConfig;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.legacy.MySqlQuerySourceConfig;
 import edu.umd.rhsmith.diads.meater.modules.tweater.storage.legacy.CsvStatusEaterConfig;
+import edu.umd.rhsmith.diads.meater.modules.tweater.storage.legacy.MySqlStatusEaterConfig;
 import edu.umd.rhsmith.diads.meater.modules.tweater.streaming.StreamQuerierConfig;
 import edu.umd.rhsmith.diads.meater.modules.tweater.tlc.TimelineCollectorConfig;
 
@@ -36,6 +37,7 @@ public class TwEater extends ConfigModule {
 		this.registerConfigType(CsvQuerySourceConfig.class);
 		this.registerConfigType(MySqlQuerySourceConfig.class);
 		this.registerConfigType(CsvStatusEaterConfig.class);
+		this.registerConfigType(MySqlStatusEaterConfig.class);
 	}
 
 	@Override

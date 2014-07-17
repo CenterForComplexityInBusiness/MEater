@@ -2,6 +2,9 @@ package edu.umd.rhsmith.diads.meater.modules.tweater;
 
 import java.util.Date;
 
+import twitter4j.HashtagEntity;
+import twitter4j.URLEntity;
+import twitter4j.UserMentionEntity;
 import edu.umd.rhsmith.diads.meater.modules.common.sentiment.SentimentAnalyzable;
 
 public interface StatusData extends SentimentAnalyzable {
@@ -34,4 +37,10 @@ public interface StatusData extends SentimentAnalyzable {
 	public long getStatusInReplyToStatusId();
 
 	public long getStatusInReplyToUserId();
+
+	public HashtagEntity[] getHashtagEntities();
+
+	public URLEntity[] getURLEntities();
+
+	public UserMentionEntity[] getUserMentionEntities();
 }

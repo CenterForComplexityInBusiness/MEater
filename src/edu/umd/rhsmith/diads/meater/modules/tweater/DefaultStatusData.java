@@ -2,7 +2,10 @@ package edu.umd.rhsmith.diads.meater.modules.tweater;
 
 import java.util.Date;
 
+import twitter4j.HashtagEntity;
 import twitter4j.Status;
+import twitter4j.URLEntity;
+import twitter4j.UserMentionEntity;
 
 public class DefaultStatusData implements StatusData {
 
@@ -119,5 +122,20 @@ public class DefaultStatusData implements StatusData {
 	public void clearSentiment() {
 		this.sentiment = 0.0;
 		this.sentimentAnalyzed = false;
+	}
+
+	@Override
+	public HashtagEntity[] getHashtagEntities() {
+		return this.source.getHashtagEntities();
+	}
+
+	@Override
+	public URLEntity[] getURLEntities() {
+		return this.source.getURLEntities();
+	}
+
+	@Override
+	public UserMentionEntity[] getUserMentionEntities() {
+		return this.source.getUserMentionEntities();
 	}
 }
