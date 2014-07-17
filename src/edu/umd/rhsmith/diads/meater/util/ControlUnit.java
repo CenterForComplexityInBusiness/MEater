@@ -2,7 +2,7 @@ package edu.umd.rhsmith.diads.meater.util;
 
 public abstract class ControlUnit extends LogUnit {
 	private final Object controlWaiter;
-	private final Object controlLock;
+	protected final Object controlLock;
 
 	private boolean stopBegun;
 	private boolean startBegun;
@@ -158,38 +158,26 @@ public abstract class ControlUnit extends LogUnit {
 	 */
 
 	public final void requireStarted() throws IllegalStateException {
-		synchronized (this.controlLock) {
-			if (!this.startFinished) {
-				throw new IllegalStateException(this
-						.messageString(MSG_ERR_NOSTART));
-			}
+		if (!this.startFinished) {
+			throw new IllegalStateException(this.messageString(MSG_ERR_NOSTART));
 		}
 	}
 
 	public final void requireUnStarted() throws IllegalStateException {
-		synchronized (this.controlLock) {
-			if (this.startBegun) {
-				throw new IllegalStateException(this
-						.messageString(MSG_ERR_START));
-			}
+		if (this.startBegun) {
+			throw new IllegalStateException(this.messageString(MSG_ERR_START));
 		}
 	}
 
 	public final void requireStopped() throws IllegalStateException {
-		synchronized (this.controlLock) {
-			if (!this.stopFinished) {
-				throw new IllegalStateException(this
-						.messageString(MSG_ERR_NOSTOP));
-			}
+		if (!this.stopFinished) {
+			throw new IllegalStateException(this.messageString(MSG_ERR_NOSTOP));
 		}
 	}
 
 	public final void requireUnStopped() throws IllegalStateException {
-		synchronized (this.controlLock) {
-			if (this.stopBegun) {
-				throw new IllegalStateException(this
-						.messageString(MSG_ERR_STOP));
-			}
+		if (this.stopBegun) {
+			throw new IllegalStateException(this.messageString(MSG_ERR_STOP));
 		}
 	}
 

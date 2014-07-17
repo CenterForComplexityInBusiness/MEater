@@ -18,7 +18,7 @@ public abstract class Component extends ControlUnit {
 	private ComponentManager componentManager;
 
 	private final Object initWaiter;
-	private final Object initLock;
+	protected final Object initLock;
 	private boolean initBegun;
 	private boolean initFinished;
 
@@ -66,9 +66,11 @@ public abstract class Component extends ControlUnit {
 
 	final void setComponentManager(ComponentManager mgr)
 			throws IllegalStateException {
-		this.requireUnStarted();
-		this.componentManager = mgr;
-		this.setLogger(mgr.getLogger());
+		synchronized (this.controlLock) {
+			this.requireUnStarted();
+			this.componentManager = mgr;
+			this.setLogger(mgr.getLogger());
+		}
 	}
 
 	/*

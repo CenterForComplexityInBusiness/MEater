@@ -109,14 +109,16 @@ public class MEaterMain extends ControlUnit {
 
 	public void addRuntimeModule(RuntimeModule m) throws IllegalStateException,
 			ModuleAlreadyLoadedException {
-		this.requireUnStarted();
+		synchronized (this.controlLock) {
+			this.requireUnStarted();
 
-		if (this.runtimeModules.containsKey(m.getClass())) {
-			throw new ModuleAlreadyLoadedException(m.getName());
+			if (this.runtimeModules.containsKey(m.getClass())) {
+				throw new ModuleAlreadyLoadedException(m.getName());
+			}
+
+			this.runtimeModules.put(m.getClass(), m);
+			m.setMain(this);
 		}
-
-		this.runtimeModules.put(m.getClass(), m);
-		m.setMain(this);
 	}
 
 	public <M extends RuntimeModule> M getRuntimeModule(Class<M> moduleClass) {

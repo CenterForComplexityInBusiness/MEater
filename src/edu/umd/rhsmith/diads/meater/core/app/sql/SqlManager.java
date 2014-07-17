@@ -72,22 +72,24 @@ public class SqlManager extends ControlUnit {
 	}
 
 	public DataSource getDataSource(String name) throws IllegalStateException {
-		this.requireUnStopped();
+		synchronized (this.controlLock) {
+			this.requireUnStopped();
 
-		DBPoolDataSource source = this.dataSources.get(name);
-		if (source == null) {
-			source = this.createDataSource(name);
+			DBPoolDataSource source = this.dataSources.get(name);
 			if (source == null) {
-				return null;
+				source = this.createDataSource(name);
+				if (source == null) {
+					return null;
+				}
+				this.dataSources.put(name, source);
 			}
-			this.dataSources.put(name, source);
+			return source;
 		}
-		return source;
 	}
 
 	private DBPoolDataSource createDataSource(String name) {
 		SqlInfo sql;
-		
+
 		if (this.sqlInfoSource == null) {
 			this.logSevere(MSG_ERR_NO_SRC);
 			return null;

@@ -16,10 +16,11 @@ public abstract class RuntimeModule extends ControlUnit {
 	}
 
 	void setMain(MEaterMain main) throws IllegalStateException {
-		this.requireUnStarted();
-
-		this.main = main;
-		this.setLogger(main.getLogger());
+		synchronized (this.controlLock) {
+			this.requireUnStarted();
+			this.main = main;
+			this.setLogger(main.getLogger());
+		}
 	}
 
 	public MEaterMain getMain() {

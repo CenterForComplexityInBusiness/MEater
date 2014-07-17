@@ -99,20 +99,23 @@ public class MediaManager extends ControlUnit {
 
 	public <M> void registerSource(String ownerName, MediaSource<M> source)
 			throws IllegalStateException {
-		this.requireUnStarted();
-		this.logInfo(MSG_SRC_REG_FMT, source.getSourceName());
-		this.sources.put(Media.handlerName(ownerName, source.getSourceName()),
-				source);
-		source.setMediaManager(this);
+		synchronized (this.controlLock) {
+			this.requireUnStarted();
+			this.logInfo(MSG_SRC_REG_FMT, source.getSourceName());
+			this.sources.put(Media.handlerName(ownerName, source
+					.getSourceName()), source);
+			source.setMediaManager(this);
+		}
 	}
 
 	public <M> void registerProcessor(String ownerName,
 			MediaProcessor<M> processor) throws IllegalStateException {
-		this.requireUnStarted();
-
-		this.logInfo(MSG_PROC_REG_FMT, processor.getProcessorName());
-		this.processors.put(Media.handlerName(ownerName, processor
-				.getProcessorName()), processor);
+		synchronized (this.controlLock) {
+			this.requireUnStarted();
+			this.logInfo(MSG_PROC_REG_FMT, processor.getProcessorName());
+			this.processors.put(Media.handlerName(ownerName, processor
+					.getProcessorName()), processor);
+		}
 	}
 
 	public <M> void registerSource(MediaSource<M> source)
@@ -128,28 +131,29 @@ public class MediaManager extends ControlUnit {
 	public <M> void registerOutput(MediaSource<? extends M> source,
 			MediaProcessor<? super M> output, boolean rejectable)
 			throws IllegalStateException {
-		this.requireUnStarted();
+		synchronized (this.controlLock) {
+			this.requireUnStarted();
 
-		this.logInfo(MSG_OUTPUT_REG_FMT, source.getSourceName(), output
-				.getProcessorName());
-		Collection<MediaProcessor<?>> ps;
-		ps = this.outputs.get(output);
-		if (ps == null) {
-			ps = new LinkedList<MediaProcessor<?>>();
-			this.outputs.put(source, ps);
-		}
-		ps.add(output);
-
-		if (rejectable) {
-			Collection<MediaProcessor<?>> rj;
-			rj = this.outputs.get(output);
-			if (rj == null) {
-				rj = new HashSet<MediaProcessor<?>>();
-				this.rejectable.put(source, rj);
+			this.logInfo(MSG_OUTPUT_REG_FMT, source.getSourceName(), output
+					.getProcessorName());
+			Collection<MediaProcessor<?>> ps;
+			ps = this.outputs.get(output);
+			if (ps == null) {
+				ps = new LinkedList<MediaProcessor<?>>();
+				this.outputs.put(source, ps);
 			}
-			rj.add(output);
-		}
+			ps.add(output);
 
+			if (rejectable) {
+				Collection<MediaProcessor<?>> rj;
+				rj = this.outputs.get(output);
+				if (rj == null) {
+					rj = new HashSet<MediaProcessor<?>>();
+					this.rejectable.put(source, rj);
+				}
+				rj.add(output);
+			}
+		}
 	}
 
 	// we must cast generic parameters based on compatibility of media classes -

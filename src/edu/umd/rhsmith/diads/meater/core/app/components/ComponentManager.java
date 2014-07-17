@@ -56,17 +56,20 @@ public class ComponentManager extends ControlUnit {
 
 	public void registerComponent(Component component)
 			throws IllegalStateException {
-		this.requireUnStarted();
-		
-		this.logInfo(MSG_REG_FMT, component.getName());
-		this.components.put(component.getName(), component);
-		component.setComponentManager(this);
+		synchronized (this.controlLock) {
+			this.requireUnStarted();
 
-		for (MediaSource<?> source : component.getMediaSources()) {
-			this.mediaManager.registerSource(component.getName(), source);
-		}
-		for (MediaProcessor<?> processor : component.getMediaProcessors()) {
-			this.mediaManager.registerProcessor(component.getName(), processor);
+			this.logInfo(MSG_REG_FMT, component.getName());
+			this.components.put(component.getName(), component);
+			component.setComponentManager(this);
+
+			for (MediaSource<?> source : component.getMediaSources()) {
+				this.mediaManager.registerSource(component.getName(), source);
+			}
+			for (MediaProcessor<?> processor : component.getMediaProcessors()) {
+				this.mediaManager.registerProcessor(component.getName(),
+						processor);
+			}
 		}
 	}
 
@@ -85,7 +88,7 @@ public class ComponentManager extends ControlUnit {
 		} catch (MEaterConfigurationException e) {
 			throw new ControlException(MSG_ERR_INIT_CONFIG, e);
 		}
-		
+
 		this.mediaManager.start();
 
 		for (Component c : this.components.values()) {
