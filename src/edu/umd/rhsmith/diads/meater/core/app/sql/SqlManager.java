@@ -29,7 +29,7 @@ public class SqlManager extends ControlUnit {
 		this.main = main;
 		this.dataSources = new HashMap<String, DBPoolDataSource>();
 		this.setLogger(main.getLogger());
-		this.setLogName(main.getLogName());
+		this.setLogName("SqlManager");
 
 		this.sqlInfoSource = new XmlSqlInfoSource();
 

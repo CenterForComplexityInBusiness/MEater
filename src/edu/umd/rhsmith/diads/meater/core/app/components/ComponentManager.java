@@ -31,7 +31,7 @@ public class ComponentManager extends ControlUnit {
 
 		// logging
 		this.setLogger(this.main.getLogger());
-		this.setLogName(this.main.getLogName());
+		this.setLogName("ComponentManager");
 	}
 
 	/*

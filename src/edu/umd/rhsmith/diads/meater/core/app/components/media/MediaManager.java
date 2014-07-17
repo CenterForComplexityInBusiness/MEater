@@ -46,7 +46,7 @@ public class MediaManager extends ControlUnit {
 
 		// logging
 		this.setLogger(this.main.getLogger());
-		this.setLogName(this.main.getLogName());
+		this.setLogName("MediaManager");
 	}
 
 	public <M> void submitMedia(M media, MediaSource<M> source) {

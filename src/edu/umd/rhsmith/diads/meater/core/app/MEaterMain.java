@@ -39,7 +39,7 @@ public class MEaterMain extends ControlUnit {
 		// set up logger
 		try {
 			Logger logger = Logger.getLogger(this.getName());
-			int maxLogSize = init.getLoggingMaxSizeMb() * 10 * Util.MB;
+			int maxLogSize = init.getLoggingMaxSizeMb() * Util.MB;
 			int maxLogs = init.getLoggingMaxLogs();
 			Handler fileHandler = new FileHandler(genLogFileName(this),
 					maxLogSize, maxLogs);
