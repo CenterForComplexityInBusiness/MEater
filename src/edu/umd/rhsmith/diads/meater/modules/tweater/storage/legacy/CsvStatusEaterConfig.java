@@ -35,6 +35,7 @@ public class CsvStatusEaterConfig extends StatusEaterConfig implements
 	private final StringProperty filename = new StringProperty(CKEY_FILENAME,
 			DEFAULT_FILENAME, UINAME_FILENAME, UIDESC_FILENAME);
 
+	@Override
 	public String getFilename() {
 		return this.filename.getVal();
 	}

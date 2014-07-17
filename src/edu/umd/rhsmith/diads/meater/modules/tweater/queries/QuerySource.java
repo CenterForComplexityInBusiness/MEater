@@ -190,6 +190,7 @@ public abstract class QuerySource extends Component implements Runnable {
 	}
 
 	// task executed by the builder thread
+	@Override
 	public void run() {
 		// Main loop periodically updates the query from the data source
 		while (!shutdownBuilderThread) {

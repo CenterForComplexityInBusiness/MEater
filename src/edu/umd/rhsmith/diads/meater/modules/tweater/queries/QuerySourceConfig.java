@@ -31,6 +31,7 @@ public abstract class QuerySourceConfig extends ComponentConfig implements
 			CKEY_REBUILD_INTERVAL_MS, DEFAULT_REBUILD_INTERVAL_MS,
 			UINAME_REBUILD_INTERVAL_MS, UIDESC_REBUILD_INTERVAL_MS);
 
+	@Override
 	public long getRebuildIntervalMs() {
 		return this.rebuildIntervalMs.getVal();
 	}

@@ -31,6 +31,7 @@ public abstract class StatusEaterConfig extends ComponentConfig implements
 	private final BooleanProperty discardsUnmatched = new BooleanProperty(
 			CKEY_DISCARDS, DEFAULT_DISCARDS, UINAME_DISCARDS, UIDESC_DISCARDS);
 
+	@Override
 	public boolean isDiscardsUnmatched() {
 		return this.discardsUnmatched.getVal();
 	}
