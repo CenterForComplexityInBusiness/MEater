@@ -14,6 +14,7 @@ import java.util.List;
  * Provides static constants and utility functions for use in other classes.
  * 
  * @author dmonner
+ * @author rmachedo
  */
 public class Util {
 	private Util() {

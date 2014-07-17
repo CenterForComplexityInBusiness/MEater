@@ -9,7 +9,7 @@ public abstract class BaseMediaSetFilter<M> implements MediaSetFilter<M> {
 	private final MediaProcessor<M> absent;
 
 	public BaseMediaSetFilter(String presentName, String absentName,
-			Class<M> mediaClass) {
+			Class<M> mediaClass) throws IllegalArgumentException {
 		this.present = new BaseMediaProcessor<M>(presentName, mediaClass) {
 			@Override
 			public boolean processMedia(M media) {

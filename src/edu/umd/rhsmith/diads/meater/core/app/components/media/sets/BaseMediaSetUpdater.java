@@ -9,7 +9,7 @@ public abstract class BaseMediaSetUpdater<M> implements MediaSetUpdater<M> {
 	private final MediaProcessor<M> remover;
 
 	public BaseMediaSetUpdater(String adderName, String removerName,
-			Class<M> mediaClass) {
+			Class<M> mediaClass) throws IllegalArgumentException {
 		this.adder = new BaseMediaProcessor<M>(adderName, mediaClass) {
 			@Override
 			public boolean processMedia(M media) {
