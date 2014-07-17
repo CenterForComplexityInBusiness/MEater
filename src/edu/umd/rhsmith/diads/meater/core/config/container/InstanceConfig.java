@@ -80,6 +80,7 @@ public abstract class InstanceConfig extends ConfigUnit {
 	 * --------------------------------
 	 */
 
+	@Override
 	protected void loadInternalConfigurationFrom(
 			HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
@@ -87,6 +88,7 @@ public abstract class InstanceConfig extends ConfigUnit {
 				.getInstanceName()));
 	}
 
+	@Override
 	protected void saveInternalConfigurationTo(
 			HierarchicalConfiguration config)
 			throws MEaterConfigurationException {

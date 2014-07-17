@@ -77,6 +77,7 @@ public class SqlConfig extends ConfigUnit implements SqlInfo {
 		this.registerConfigProperty(idleTimeoutS);
 	}
 
+	@Override
 	public String getHostname() {
 		return hostname.getVal();
 	}
@@ -85,6 +86,7 @@ public class SqlConfig extends ConfigUnit implements SqlInfo {
 		this.hostname.setVal(hostname);
 	}
 
+	@Override
 	public String getDbName() {
 		return dbName.getVal();
 	}
@@ -93,6 +95,7 @@ public class SqlConfig extends ConfigUnit implements SqlInfo {
 		this.dbName.setVal(dbName);
 	}
 
+	@Override
 	public String getUser() {
 		return user.getVal();
 	}
@@ -101,6 +104,7 @@ public class SqlConfig extends ConfigUnit implements SqlInfo {
 		this.user.setVal(user);
 	}
 
+	@Override
 	public String getPassword() {
 		return password.getVal();
 	}
@@ -109,6 +113,7 @@ public class SqlConfig extends ConfigUnit implements SqlInfo {
 		this.password.setVal(password);
 	}
 
+	@Override
 	public int getMinPool() {
 		return minPool.getVal();
 	}
@@ -117,6 +122,7 @@ public class SqlConfig extends ConfigUnit implements SqlInfo {
 		this.minPool.setVal(minPool);
 	}
 
+	@Override
 	public int getMaxPool() {
 		return maxPool.getVal();
 	}
@@ -125,6 +131,7 @@ public class SqlConfig extends ConfigUnit implements SqlInfo {
 		this.maxPool.setVal(maxPool);
 	}
 
+	@Override
 	public int getMaxSize() {
 		return maxSize.getVal();
 	}
@@ -133,6 +140,7 @@ public class SqlConfig extends ConfigUnit implements SqlInfo {
 		this.maxSize.setVal(maxSize);
 	}
 
+	@Override
 	public int getIdleTimeoutS() {
 		return idleTimeoutS.getVal();
 	}

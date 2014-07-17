@@ -100,6 +100,7 @@ public abstract class ComponentConfig extends InstanceConfig implements
 	 * --------------------------------
 	 */
 
+	@Override
 	protected void loadInternalConfigurationFrom(
 			HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
@@ -110,6 +111,7 @@ public abstract class ComponentConfig extends InstanceConfig implements
 	public void resetInternalConfiguration() {
 	}
 
+	@Override
 	protected void saveInternalConfigurationTo(
 			HierarchicalConfiguration config)
 			throws MEaterConfigurationException {

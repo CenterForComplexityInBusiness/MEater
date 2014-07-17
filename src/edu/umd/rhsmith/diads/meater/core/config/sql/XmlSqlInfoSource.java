@@ -9,6 +9,7 @@ import edu.umd.rhsmith.diads.meater.core.app.sql.SqlInfoSource;
 import edu.umd.rhsmith.diads.meater.core.app.sql.SqlLoadException;
 
 public class XmlSqlInfoSource implements SqlInfoSource {
+	@Override
 	public SqlInfo getSqlInfo(String name) throws SqlLoadException {
 		SqlConfig sql = new SqlConfig();
 

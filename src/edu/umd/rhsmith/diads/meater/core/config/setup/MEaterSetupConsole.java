@@ -78,6 +78,7 @@ public class MEaterSetupConsole implements Runnable {
 		this.externalFilenameStack = new LinkedList<String>();
 	}
 
+	@Override
 	public void run() {
 		// hello
 		this.printWelcome();

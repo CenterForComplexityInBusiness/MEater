@@ -46,10 +46,12 @@ public abstract class BasicConfigProperty<T> implements ConfigProperty<T> {
 		this.val = this.defaultVal;
 	}
 
+	@Override
 	public T getVal() {
 		return this.val;
 	}
 
+	@Override
 	public void setVal(T val) {
 		if (val == null) {
 			this.val = this.defaultVal;
