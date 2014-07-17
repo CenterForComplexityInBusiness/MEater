@@ -3,7 +3,6 @@ package edu.umd.rhsmith.diads.meater.modules.tweater.queries.legacy;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
 import edu.umd.rhsmith.diads.meater.core.config.props.StringProperty;
-import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QuerySourceConfig;
 
 public class CsvQuerySourceConfig extends QuerySourceConfig implements
 		CsvQuerySourceInitializer {

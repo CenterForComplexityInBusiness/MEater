@@ -1,7 +1,8 @@
-package edu.umd.rhsmith.diads.meater.modules.tweater.queries;
+package edu.umd.rhsmith.diads.meater.modules.tweater.queries.legacy;
 
 import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
 import edu.umd.rhsmith.diads.meater.core.config.props.LongProperty;
+import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItem;
 
 public abstract class QuerySourceConfig extends ComponentConfig implements
 		QuerySourceInitializer {

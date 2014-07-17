@@ -1,4 +1,4 @@
-package edu.umd.rhsmith.diads.meater.modules.tweater.queries;
+package edu.umd.rhsmith.diads.meater.modules.tweater.queries.legacy;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +10,8 @@ import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.BaseMediaSetUpdateViewer;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.MediaSetUpdateViewer;
+import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItem;
+import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItemTime;
 import edu.umd.rhsmith.diads.meater.util.Util;
 
 /**

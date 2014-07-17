@@ -15,7 +15,6 @@ import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryFollow;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItemTime;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryLocation;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryPhrase;
-import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QuerySource;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryTrack;
 import edu.umd.rhsmith.diads.meater.util.NumberSet;
 import edu.umd.rhsmith.diads.meater.util.Util;

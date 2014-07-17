@@ -1,4 +1,4 @@
-package edu.umd.rhsmith.diads.meater.modules.tweater.queries;
+package edu.umd.rhsmith.diads.meater.modules.tweater.queries.legacy;
 
 import edu.umd.rhsmith.diads.meater.core.app.components.ComponentInitializer;
 
