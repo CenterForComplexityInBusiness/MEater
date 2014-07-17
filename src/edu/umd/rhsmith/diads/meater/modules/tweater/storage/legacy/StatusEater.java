@@ -127,6 +127,6 @@ public abstract class StatusEater extends Component implements
 	 * --------------------------------
 	 */
 
-	private static final String MSG_SKIP_UNMATCHED_FMT = "Skipping persist() because there are not QueryItem matches for status id %ld";
-	private static final String MSG_PROCESSING_FMT = "Entering process() for status id %ld";
+	private static final String MSG_SKIP_UNMATCHED_FMT = "Skipping persist() because there are not QueryItem matches for status id %d";
+	private static final String MSG_PROCESSING_FMT = "Entering process() for status id %d";
 }

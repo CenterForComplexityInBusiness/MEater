@@ -271,7 +271,7 @@ public class TimelineCollector extends Component implements Runnable {
 	private static final String MSG_ERR_NOTWMGR = "No twitter manager available for getting OAuth";
 	private static final String MSG_ERR_SHUTDOWN_INTERRUPTED = "Interrupted while awaiting querier theread termination";
 	private static final String MSG_QUERYTHREAD_ENDED = "Querier shut down.";
-	private static final String MSG_COLLECTING_ID_FMT = "Collecting user id %ld";
+	private static final String MSG_COLLECTING_ID_FMT = "Collecting user id %d";
 	private static final String MSG_ERR_LIMIT_INTERRUPTED = "Interrupted while waiting for rate-limit expiration";
 	private static final String MSG_ERR_TWITEX_FMT = "Twitter exception while getting timeline page %d: %s";
 	private static final String MSG_RATELIMIT_FMT = "Rate-limited; waiting on page %d for %d seconds.";

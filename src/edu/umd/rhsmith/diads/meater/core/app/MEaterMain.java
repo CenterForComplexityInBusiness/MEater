@@ -147,7 +147,7 @@ public class MEaterMain extends ControlUnit {
 	}
 
 	public static String genName(String configName) {
-		return String.format("meater_%s_%dl", configName, new Date().getTime());
+		return String.format("meater_%s_%d", configName, new Date().getTime());
 	}
 
 	/*

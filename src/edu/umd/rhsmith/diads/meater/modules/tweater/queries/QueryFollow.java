@@ -33,7 +33,7 @@ public class QueryFollow extends QueryItem {
 	public QueryFollow(long id, long userId) {
 		super(id);
 		this.userId = userId;
-		this.readableString = String.format("follow %ld %ld", this.getQueryId(),
+		this.readableString = String.format("follow %d %d", this.getQueryId(),
 				userId);
 	}
 

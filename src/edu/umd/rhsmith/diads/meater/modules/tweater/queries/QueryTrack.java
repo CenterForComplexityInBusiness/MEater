@@ -38,7 +38,7 @@ public class QueryTrack extends QueryItem {
 		super(id);
 		this.originalString = string.trim().toLowerCase();
 		this.trackWords = this.originalString.split("\\s");
-		this.readableString = String.format("track %ld [%s]", this.getQueryId(),
+		this.readableString = String.format("track %d [%s]", this.getQueryId(),
 				this.originalString);
 	}
 

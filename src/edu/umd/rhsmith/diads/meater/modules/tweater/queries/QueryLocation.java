@@ -62,7 +62,7 @@ public class QueryLocation extends QueryItem {
 
 		this.pointNE = pointNE;
 		this.pointSW = pointSW;
-		this.readableString = String.format("location %ld [%s, %s]", this
+		this.readableString = String.format("location %d [%s, %s]", this
 				.getQueryId(), pointSW.toString(), pointNE.toString());
 	}
 

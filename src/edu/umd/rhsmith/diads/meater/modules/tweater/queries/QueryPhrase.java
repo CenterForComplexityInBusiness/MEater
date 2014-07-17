@@ -29,7 +29,7 @@ public class QueryPhrase extends QueryItem {
 	public QueryPhrase(long id, String string) {
 		super(id);
 		this.phrase = string.trim().toLowerCase();
-		this.readableString = String.format("phrase %ld [\"%s\"]",
+		this.readableString = String.format("phrase %d [\"%s\"]",
 				this.getQueryId(), this.phrase);
 	}
 
