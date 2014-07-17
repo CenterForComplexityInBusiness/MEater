@@ -13,7 +13,7 @@ import twitter4j.HashtagEntity;
 import twitter4j.URLEntity;
 import twitter4j.UserMentionEntity;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
-import edu.umd.rhsmith.diads.meater.modules.tweater.UserStatusData;
+import edu.umd.rhsmith.diads.meater.modules.tweater.media.UserStatusData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryFollow;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItem;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryLocation;

@@ -3,7 +3,7 @@ package edu.umd.rhsmith.diads.meater.modules.tweater.queries;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
 import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
-import edu.umd.rhsmith.diads.meater.modules.tweater.UserData;
+import edu.umd.rhsmith.diads.meater.modules.tweater.media.UserData;
 
 public class UserToFollowQueryConfig extends ComponentConfig {
 

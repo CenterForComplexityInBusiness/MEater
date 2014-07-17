@@ -4,7 +4,7 @@ import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
 import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
 import edu.umd.rhsmith.diads.meater.core.config.props.StringProperty;
-import edu.umd.rhsmith.diads.meater.modules.tweater.UserStatusData;
+import edu.umd.rhsmith.diads.meater.modules.tweater.media.UserStatusData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryFollow;
 
 public class TimelineCollectorConfig extends ComponentConfig implements

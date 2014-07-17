@@ -2,7 +2,7 @@ package edu.umd.rhsmith.diads.meater.modules.tweater.queries;
 
 import java.util.Arrays;
 
-import edu.umd.rhsmith.diads.meater.modules.tweater.StatusData;
+import edu.umd.rhsmith.diads.meater.modules.tweater.media.StatusData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.streaming.FilterQueryBuilder;
 
 /**

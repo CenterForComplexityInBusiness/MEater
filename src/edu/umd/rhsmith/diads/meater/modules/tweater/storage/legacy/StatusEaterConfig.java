@@ -2,7 +2,7 @@ package edu.umd.rhsmith.diads.meater.modules.tweater.storage.legacy;
 
 import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
 import edu.umd.rhsmith.diads.meater.core.config.props.BooleanProperty;
-import edu.umd.rhsmith.diads.meater.modules.tweater.UserStatusData;
+import edu.umd.rhsmith.diads.meater.modules.tweater.media.UserStatusData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItem;
 
 public abstract class StatusEaterConfig extends ComponentConfig implements

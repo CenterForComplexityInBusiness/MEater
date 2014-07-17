@@ -5,7 +5,7 @@ import edu.umd.rhsmith.diads.meater.core.app.components.Component;
 import edu.umd.rhsmith.diads.meater.core.app.components.ComponentInitializer;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaProcessor;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaSource;
-import edu.umd.rhsmith.diads.meater.modules.tweater.UserData;
+import edu.umd.rhsmith.diads.meater.modules.tweater.media.UserData;
 import edu.umd.rhsmith.diads.meater.util.ControlException;
 
 public class UserToFollowQuery extends Component implements

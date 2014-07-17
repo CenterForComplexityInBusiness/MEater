@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
-import edu.umd.rhsmith.diads.meater.modules.tweater.UserStatusData;
+import edu.umd.rhsmith.diads.meater.modules.tweater.media.UserStatusData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItem;
 import edu.umd.rhsmith.diads.meater.util.ControlException;
 

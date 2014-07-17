@@ -1,6 +1,6 @@
 package edu.umd.rhsmith.diads.meater.modules.tweater.queries;
 
-import edu.umd.rhsmith.diads.meater.modules.tweater.StatusData;
+import edu.umd.rhsmith.diads.meater.modules.tweater.media.StatusData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.streaming.FilterQueryBuilder;
 
 /**

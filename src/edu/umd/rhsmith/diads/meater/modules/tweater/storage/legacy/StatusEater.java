@@ -10,7 +10,7 @@ import edu.umd.rhsmith.diads.meater.core.app.components.Component;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaProcessor;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.BaseMediaSetUpdater;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.MediaSetUpdater;
-import edu.umd.rhsmith.diads.meater.modules.tweater.UserStatusData;
+import edu.umd.rhsmith.diads.meater.modules.tweater.media.UserStatusData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItem;
 
 /**

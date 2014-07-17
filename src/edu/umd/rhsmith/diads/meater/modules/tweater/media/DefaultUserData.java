@@ -1,4 +1,4 @@
-package edu.umd.rhsmith.diads.meater.modules.tweater;
+package edu.umd.rhsmith.diads.meater.modules.tweater.media;
 
 import java.util.Date;
 
