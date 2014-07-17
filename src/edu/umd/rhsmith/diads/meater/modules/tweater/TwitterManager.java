@@ -26,7 +26,11 @@ public class TwitterManager extends RuntimeModule {
 		return this.oAuthSource;
 	}
 
-	public OAuthInfo getOAuthInfo(String name) {
+	public OAuthInfo getOAuthInfo(String name) throws NullPointerException {
+		if(name == null) {
+			throw new NullPointerException();
+		}
+		
 		if (this.oAuthSource == null) {
 			this.logSevere(MSG_ERR_NO_SRC);
 			return null;

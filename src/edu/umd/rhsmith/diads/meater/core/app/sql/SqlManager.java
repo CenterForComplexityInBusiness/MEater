@@ -71,7 +71,11 @@ public class SqlManager extends ControlUnit {
 		}
 	}
 
-	public DataSource getDataSource(String name) throws IllegalStateException {
+	public DataSource getDataSource(String name) throws NullPointerException, IllegalStateException {
+		if(name == null) {
+			throw new NullPointerException();
+		}
+		
 		synchronized (this.controlLock) {
 			this.requireUnStopped();
 
