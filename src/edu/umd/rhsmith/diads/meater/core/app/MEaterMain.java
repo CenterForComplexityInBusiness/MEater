@@ -26,7 +26,14 @@ public class MEaterMain extends ControlUnit {
 	private final Map<Class<? extends RuntimeModule>, RuntimeModule> runtimeModules;
 
 	public MEaterMain(String name, MEaterInitializer init)
-			throws MEaterConfigurationException {
+			throws IllegalArgumentException, MEaterConfigurationException {
+		if (name == null) {
+			throw new IllegalArgumentException(MSG_ERR_NULL_NAME);
+		}
+		if (init == null) {
+			throw new IllegalArgumentException(MSG_ERR_NULL_INIT);
+		}
+
 		this.name = name;
 
 		// set up logger
@@ -149,4 +156,6 @@ public class MEaterMain extends ControlUnit {
 	 * --------------------------------
 	 */
 
+	private static final String MSG_ERR_NULL_INIT = "Null initializer";
+	private static final String MSG_ERR_NULL_NAME = "Null name";
 }
