@@ -1,6 +1,9 @@
 package edu.umd.rhsmith.diads.meater.util;
 
 public abstract class ControlUnit extends LogUnit {
+	// TODO either replace this system with something more reliable and easy to
+	// use, or remove it and let the user know there are no guarantees if they
+	// set up and start/stop units in different threads.
 	private final Object controlWaiter;
 	protected final Object controlLock;
 
