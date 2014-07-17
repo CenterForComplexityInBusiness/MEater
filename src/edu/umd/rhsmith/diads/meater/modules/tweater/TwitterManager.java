@@ -11,6 +11,8 @@ import edu.umd.rhsmith.diads.meater.util.Util;
 
 public class TwitterManager extends RuntimeModule {
 
+	// TODO manage & supply twitter stream / other query objects?
+	
 	private OAuthSource oAuthSource;
 
 	public TwitterManager() throws MEaterConfigurationException {
