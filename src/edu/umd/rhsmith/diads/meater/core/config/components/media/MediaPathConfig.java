@@ -18,6 +18,7 @@ import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathDescrip
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathProcessorAddOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathProcessorListOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathProcessorRemoveOperation;
+import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathRejectableOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathSetMediaOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathSourceAddOperation;
 import edu.umd.rhsmith.diads.meater.core.config.setup.ops.media.path.PathSourceListOperation;
@@ -63,6 +64,7 @@ public final class MediaPathConfig extends ComponentConfig {
 				.getCreationSetupConsoleOperation());
 
 		// misc
+		this.registerSetupConsoleOperation(new PathRejectableOperation(this));
 		this.registerSetupConsoleOperation(new PathDescriptionOperation(this));
 	}
 
