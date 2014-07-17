@@ -57,7 +57,7 @@ public final class MediaPathConfig extends ComponentConfig {
 		this.registerSetupConsoleOperation(new PathSourceAddOperation(this));
 		this.registerSetupConsoleOperation(new PathSourceRemoveOperation(this));
 		this.registerSetupConsoleOperation(new PathSourceListOperation(this));
-		
+
 		// media types
 		this.setCreationSetupConsoleOperation(new PathSetMediaOperation(this));
 		this.registerSetupConsoleOperation(this
@@ -146,7 +146,7 @@ public final class MediaPathConfig extends ComponentConfig {
 		if (description == null) {
 			throw new NullPointerException();
 		}
-		
+
 		this.description = description;
 	}
 
@@ -208,8 +208,12 @@ public final class MediaPathConfig extends ComponentConfig {
 
 	@Override
 	public String getUiName() {
-		return String.format(MSG_OPERATES_ON_FMT, super.getUiName(),
-				this.mediaClass.getName());
+		if (this.mediaClass != null) {
+			return String.format(MSG_OPERATES_ON_FMT, super.getUiName(),
+					this.mediaClass.getName());
+		} else {
+			return String.format(MSG_OPERATES_ON_NONE_FMT, super.getUiName());
+		}
 	}
 
 	@Override
@@ -323,4 +327,5 @@ public final class MediaPathConfig extends ComponentConfig {
 
 	private static final String MSG_ERR_NO_CLASS = "Media path %s has no assigned media class, cannot instantiate.";
 	private static final String MSG_OPERATES_ON_FMT = "%s (operates on %s)";
+	private static final String MSG_OPERATES_ON_NONE_FMT = "%s (no media class set)";
 }
