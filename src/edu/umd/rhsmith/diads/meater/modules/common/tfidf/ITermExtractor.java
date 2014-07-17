@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface ITermExtractor {
 	
-	public Map<String, Double> process(String sentimentAnalysisText);
+	public Map<String, Double> process(String analysisText);
 }
