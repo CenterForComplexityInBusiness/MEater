@@ -15,6 +15,7 @@ public final class MediaPath<M> extends Component implements MediaProcessor<M> {
 	private final Collection<String> sourceNames;
 	private final Collection<String> processorNames;
 	private final Collection<MediaProcessor<? super M>> processors;
+	private final boolean rejectable;
 
 	public MediaPath(MediaPathInitializer<M> init)
 			throws MEaterConfigurationException {
@@ -24,6 +25,7 @@ public final class MediaPath<M> extends Component implements MediaProcessor<M> {
 		this.sourceNames = init.getSourceNames();
 		this.processorNames = init.getProcessorNames();
 		this.processors = new LinkedList<MediaProcessor<? super M>>();
+		this.rejectable = init.isRejectable();
 	}
 
 	@Override
@@ -34,6 +36,10 @@ public final class MediaPath<M> extends Component implements MediaProcessor<M> {
 	@Override
 	public Class<M> getMediaClass() {
 		return this.mediaClass;
+	}
+
+	public boolean isRejectable() {
+		return rejectable;
 	}
 
 	@Override
@@ -54,7 +60,7 @@ public final class MediaPath<M> extends Component implements MediaProcessor<M> {
 			for (String sourceName : this.sourceNames) {
 				MediaSource<? extends M> s = mediaManager.getMediaSource(
 						sourceName, this.getMediaClass());
-				mediaManager.registerOutput(s, this);
+				mediaManager.registerOutput(s, this, this.rejectable);
 			}
 			for (String processorName : this.processorNames) {
 				this.processors.add(mediaManager.getMediaProcessor(

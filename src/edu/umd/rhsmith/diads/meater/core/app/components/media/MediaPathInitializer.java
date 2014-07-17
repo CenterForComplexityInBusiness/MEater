@@ -8,4 +8,5 @@ public interface MediaPathInitializer<M> extends ComponentInitializer {
 	public Class<M> getMediaClass();
 	public Collection<String> getSourceNames();
 	public Collection<String> getProcessorNames();
+	public boolean isRejectable();
 }

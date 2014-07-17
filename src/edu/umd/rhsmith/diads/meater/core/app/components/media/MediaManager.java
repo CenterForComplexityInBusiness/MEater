@@ -2,6 +2,7 @@ package edu.umd.rhsmith.diads.meater.core.app.components.media;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -22,6 +23,7 @@ public class MediaManager extends ControlUnit {
 	private final Map<String, MediaProcessor<?>> processors;
 	private final Map<String, MediaSource<?>> sources;
 	private final Map<MediaSource<?>, Collection<MediaProcessor<?>>> outputs;
+	private final Map<MediaSource<?>, Collection<MediaProcessor<?>>> rejectable;
 
 	private final ThreadPoolExecutor processingThreadPool;
 	private final double rejectionThreshold;
@@ -33,6 +35,7 @@ public class MediaManager extends ControlUnit {
 		this.processors = new HashMap<String, MediaProcessor<?>>();
 		this.sources = new HashMap<String, MediaSource<?>>();
 		this.outputs = new HashMap<MediaSource<?>, Collection<MediaProcessor<?>>>();
+		this.rejectable = new HashMap<MediaSource<?>, Collection<MediaProcessor<?>>>();
 
 		// create thread pool
 		this.processingThreadPool = new ThreadPoolExecutor(init
@@ -47,19 +50,26 @@ public class MediaManager extends ControlUnit {
 	}
 
 	public <M> void submitMedia(M media, MediaSource<M> source) {
-		// check that we're under utilization
+		// check that we're under utilization; otherwise, we may reject
+		// certain outputs
+		boolean reject = false;
 		double utilization = Util.getMemoryUtilizationFraction();
 		if (utilization >= rejectionThreshold) {
 			this.logFine(MSG_THRESHOLD_REJECTED_FMT, utilization,
 					this.rejectionThreshold, media.toString());
-			return;
+			reject = true;
 		}
 
 		// send the media to all outputs as their own tasks
 		final M m = media;
 		for (MediaProcessor<?> processor : this.outputs.get(source)) {
+			// ...unless we're allowed to reject it
+			if (reject && rejectable.get(source).contains(processor)) {
+				continue;
+			}
+
 			// we already checked that things were okay when the output mapping
-			// was registered
+			// was registered, so we can suppress this warning
 			@SuppressWarnings("unchecked")
 			final MediaProcessor<? super M> p = (MediaProcessor<? super M>) processor;
 			this.processingThreadPool.submit(new Runnable() {
@@ -116,7 +126,8 @@ public class MediaManager extends ControlUnit {
 	}
 
 	public <M> void registerOutput(MediaSource<? extends M> source,
-			MediaProcessor<? super M> output) throws IllegalStateException {
+			MediaProcessor<? super M> output, boolean rejectable)
+			throws IllegalStateException {
 		this.requireUnStarted();
 
 		this.logInfo(MSG_OUTPUT_REG_FMT, source.getSourceName(), output
@@ -128,6 +139,17 @@ public class MediaManager extends ControlUnit {
 			this.outputs.put(source, ps);
 		}
 		ps.add(output);
+
+		if (rejectable) {
+			Collection<MediaProcessor<?>> rj;
+			rj = this.outputs.get(output);
+			if (rj == null) {
+				rj = new HashSet<MediaProcessor<?>>();
+				this.rejectable.put(source, rj);
+			}
+			rj.add(output);
+		}
+
 	}
 
 	// we must cast generic parameters based on compatibility of media classes -

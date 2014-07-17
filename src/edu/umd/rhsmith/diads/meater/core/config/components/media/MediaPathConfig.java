@@ -27,10 +27,12 @@ public final class MediaPathConfig extends ComponentConfig {
 	public static final String CKEY_SOURCE = "source";
 	public static final String CKEY_PROCESSOR = "processor";
 	public static final String CKEY_MEDIA_CLASS = "mediaClass";
+	public static final String CKEY_REJECTABLE = "rejectable";
 
 	private Class<?> mediaClass;
 	private final Collection<String> sources;
 	private final List<String> processors;
+	public boolean rejectable;
 
 	private String description;
 
@@ -103,6 +105,11 @@ public final class MediaPathConfig extends ComponentConfig {
 		public Collection<String> getProcessorNames() {
 			return MediaPathConfig.this.getProcessors();
 		}
+
+		@Override
+		public boolean isRejectable() {
+			return MediaPathConfig.this.rejectable;
+		}
 	}
 
 	/*
@@ -131,6 +138,14 @@ public final class MediaPathConfig extends ComponentConfig {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public boolean isRejectable() {
+		return rejectable;
+	}
+
+	public void setRejectable(boolean rejectable) {
+		this.rejectable = rejectable;
 	}
 
 	/*
@@ -202,6 +217,7 @@ public final class MediaPathConfig extends ComponentConfig {
 	public void resetInternalConfiguration() {
 		this.sources.clear();
 		this.processors.clear();
+		this.rejectable = false;
 	}
 
 	@Override
@@ -209,6 +225,8 @@ public final class MediaPathConfig extends ComponentConfig {
 			HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
 		super.loadInternalConfigurationFrom(config);
+
+		this.rejectable = config.getBoolean(CKEY_REJECTABLE, this.rejectable);
 
 		for (String s : config.getStringArray(CKEY_SOURCE)) {
 			this.sources.add(s);
@@ -224,6 +242,8 @@ public final class MediaPathConfig extends ComponentConfig {
 	protected void saveInternalConfigurationTo(HierarchicalConfiguration config)
 			throws MEaterConfigurationException {
 		super.saveInternalConfigurationTo(config);
+
+		config.setProperty(CKEY_REJECTABLE, this.rejectable);
 
 		for (String s : this.sources) {
 			config.addProperty(CKEY_SOURCE, s);
