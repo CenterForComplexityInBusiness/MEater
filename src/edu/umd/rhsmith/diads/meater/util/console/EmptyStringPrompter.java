@@ -2,6 +2,7 @@ package edu.umd.rhsmith.diads.meater.util.console;
 
 public class EmptyStringPrompter extends StringPrompter {
 
+	@Override
 	public String accept(String input) {
 		if (input.equals(SPECIAL_EMPTY)) {
 			return "";

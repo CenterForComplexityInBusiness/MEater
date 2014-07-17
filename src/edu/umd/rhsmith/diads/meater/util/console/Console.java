@@ -123,7 +123,7 @@ public class Console {
 				if (breakOnEmpty && input.isEmpty()) {
 					break;
 				} else {
-					return (E) prompt.accept(input);
+					return prompt.accept(input);
 				}
 			} catch (IllegalArgumentException e) {
 				error(e.getMessage());

@@ -2,6 +2,7 @@ package edu.umd.rhsmith.diads.meater.util.console;
 
 public class CharPrompter implements ConsolePrompter<Character> {
 
+	@Override
 	public Character accept(String input) {
 		if (input.length() == 1) {
 			return input.charAt(0);

@@ -1,6 +1,7 @@
 package edu.umd.rhsmith.diads.meater.util.console;
 
 public class FloatPrompter implements ConsolePrompter<Float> {
+	@Override
 	public Float accept(String input) {
 		try {
 			return Float.parseFloat(input);

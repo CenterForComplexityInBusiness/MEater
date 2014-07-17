@@ -1,6 +1,7 @@
 package edu.umd.rhsmith.diads.meater.util.console;
 
 public class BytePrompter implements ConsolePrompter<Byte> {
+	@Override
 	public Byte accept(String input) {
 		try {
 			return Byte.parseByte(input);

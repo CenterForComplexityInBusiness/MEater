@@ -9,6 +9,7 @@ public class BooleanPrompter implements ConsolePrompter<Boolean> {
 		this.f = f;
 	}
 
+	@Override
 	public Boolean accept(String input) {
 		if (input.equalsIgnoreCase(t)) {
 			return true;

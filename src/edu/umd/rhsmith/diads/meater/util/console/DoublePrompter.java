@@ -1,6 +1,7 @@
 package edu.umd.rhsmith.diads.meater.util.console;
 
 public class DoublePrompter implements ConsolePrompter<Double> {
+	@Override
 	public Double accept(String input) {
 		try {
 			return Double.parseDouble(input);

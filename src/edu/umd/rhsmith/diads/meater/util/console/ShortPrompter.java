@@ -1,6 +1,7 @@
 package edu.umd.rhsmith.diads.meater.util.console;
 
 public class ShortPrompter implements ConsolePrompter<Short> {
+	@Override
 	public Short accept(String input) {
 		try {
 			return Short.parseShort(input);

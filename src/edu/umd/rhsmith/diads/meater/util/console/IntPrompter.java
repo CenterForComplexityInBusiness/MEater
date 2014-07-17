@@ -1,6 +1,7 @@
 package edu.umd.rhsmith.diads.meater.util.console;
 
 public class IntPrompter implements ConsolePrompter<Integer> {
+	@Override
 	public Integer accept(String input) {
 		try {
 			return Integer.parseInt(input);

@@ -1,6 +1,7 @@
 package edu.umd.rhsmith.diads.meater.util.console;
 
 public class LongPrompter implements ConsolePrompter<Long> {
+	@Override
 	public Long accept(String input) {
 		try {
 			return Long.parseLong(input);
