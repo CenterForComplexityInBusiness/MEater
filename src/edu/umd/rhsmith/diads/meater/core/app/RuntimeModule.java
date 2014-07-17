@@ -7,12 +7,9 @@ public abstract class RuntimeModule extends ControlUnit {
 	private MEaterMain main;
 	private String name;
 
-	public RuntimeModule(String moduleName) throws IllegalStateException,
-			ModuleAlreadyLoadedException, MEaterConfigurationException {
+	public RuntimeModule(String moduleName) {
 		this.name = moduleName;
 		this.setLogName(moduleName);
-
-		this.main.addRuntimeModule(this);
 	}
 
 	void setMain(MEaterMain main) throws IllegalStateException {
