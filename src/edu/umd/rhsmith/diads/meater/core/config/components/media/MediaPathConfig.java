@@ -127,8 +127,7 @@ public final class MediaPathConfig extends ComponentConfig {
 		return mediaClass;
 	}
 
-	public void setMediaClass(Class<?> mediaClass) throws NullPointerException,
-			IllegalStateException {
+	public void setMediaClass(Class<?> mediaClass) {
 		this.mediaClass = mediaClass;
 		if (mediaClass != null) {
 			this.registerMediaProcessorName("", mediaClass);
