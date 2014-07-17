@@ -141,7 +141,11 @@ public final class MediaPathConfig extends ComponentConfig {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(String description) throws NullPointerException {
+		if (description == null) {
+			throw new NullPointerException();
+		}
+		
 		this.description = description;
 	}
 

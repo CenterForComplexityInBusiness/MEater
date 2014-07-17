@@ -20,6 +20,11 @@ public class PathDescriptionOperation extends SetupConsoleOperation {
 	public void go(MEaterSetupConsole setup) {
 		setup.getConsole().say(MSG_PROMPT);
 		String descr = setup.getConsole().prompt(true);
+		
+		if (descr == null) {
+			descr = this.owner.getDescription();
+		}
+		
 		this.owner.setDescription(descr);
 	}
 
@@ -29,5 +34,5 @@ public class PathDescriptionOperation extends SetupConsoleOperation {
 	 * --------------------------------
 	 */
 	
-	private static final String MSG_PROMPT = "Enter the new description for this media path.";
+	private static final String MSG_PROMPT = "Enter the new description for this media path. (Empty line to retain current).";
 }
