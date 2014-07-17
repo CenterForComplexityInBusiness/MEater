@@ -43,10 +43,12 @@ public class PySentimentAnalyzerConfig extends ComponentConfig implements
 			CKEY_CLASSIFIER_FILENAME, DEFAULT_CLASSIFIER_FILENAME,
 			UINAME_CLASSIFIER_FILENAME, UIDESC_CLASSIFIER_FILENAME);
 
+	@Override
 	public String getClassifierFilename() {
 		return this.classiferFilename.getVal();
 	}
 
+	@Override
 	public String getFeaturesFilename() {
 		return this.featuresFilename.getVal();
 	}
