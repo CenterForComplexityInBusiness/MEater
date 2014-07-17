@@ -1,6 +1,5 @@
 package edu.umd.rhsmith.diads.meater.modules.tweater;
 
-import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.RuntimeModule;
 import edu.umd.rhsmith.diads.meater.modules.tweater.oauth.OAuthInfo;
 import edu.umd.rhsmith.diads.meater.modules.tweater.oauth.OAuthLoadException;
@@ -15,7 +14,7 @@ public class TwitterManager extends RuntimeModule {
 	
 	private OAuthSource oAuthSource;
 
-	public TwitterManager() throws MEaterConfigurationException {
+	public TwitterManager() {
 		super("TwitterManager");
 		this.oAuthSource = new XmlOAuthSource();
 	}
