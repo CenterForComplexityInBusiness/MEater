@@ -8,6 +8,7 @@ import org.python.core.PySystemState;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaProcessor;
+import edu.umd.rhsmith.diads.meater.modules.common.sentiment.analyzers.ISentimentAnalyzer;
 import edu.umd.rhsmith.diads.meater.util.ControlException;
 
 public class PySentimentAnalyzer extends Component implements

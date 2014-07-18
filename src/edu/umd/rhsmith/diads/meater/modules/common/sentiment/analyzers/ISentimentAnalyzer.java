@@ -1,4 +1,4 @@
-package edu.umd.rhsmith.diads.meater.modules.common.sentiment;
+package edu.umd.rhsmith.diads.meater.modules.common.sentiment.analyzers;
 
 public interface ISentimentAnalyzer {
 	
