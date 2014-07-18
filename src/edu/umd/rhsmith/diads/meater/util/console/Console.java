@@ -64,12 +64,12 @@ public class Console {
 	}
 
 	public void warn(String message, Object... args) {
-		out.println(indentLines(format(FMT_MSG_WARN, format(message, args)),
+		out.println(indentLines(format(MSG_WARN_FMT, format(message, args)),
 				totalIndent, indentSequence));
 	}
 
 	public void error(String message, Object... args) {
-		out.println(indentLines(format(FMT_MSG_ERROR, format(message, args)),
+		out.println(indentLines(format(MSG_ERROR_FMT, format(message, args)),
 				totalIndent, indentSequence));
 	}
 
@@ -82,12 +82,12 @@ public class Console {
 	}
 
 	public void warn(String message) {
-		out.println(indentLines(format(FMT_MSG_WARN, message), totalIndent,
+		out.println(indentLines(format(MSG_WARN_FMT, message), totalIndent,
 				indentSequence));
 	}
 
 	public void error(String message) {
-		out.println(indentLines(format(FMT_MSG_ERROR, message), totalIndent,
+		out.println(indentLines(format(MSG_ERROR_FMT, message), totalIndent,
 				indentSequence));
 	}
 
@@ -160,6 +160,6 @@ public class Console {
 	 */
 
 	// prefixes for warning, error
-	private static final String FMT_MSG_ERROR = "###Error: %s";
-	private static final String FMT_MSG_WARN = ">>>Warning: %s";
+	private static final String MSG_ERROR_FMT = "###Error: %s";
+	private static final String MSG_WARN_FMT = ">>>Warning: %s";
 }
