@@ -2,14 +2,14 @@ package edu.umd.rhsmith.diads.meater.modules.common;
 
 import edu.umd.rhsmith.diads.meater.core.config.ConfigModule;
 import edu.umd.rhsmith.diads.meater.modules.common.sentiment.SentimentAnalyzable;
-import edu.umd.rhsmith.diads.meater.modules.common.sentiment.PySentimentAnalyzerConfig;
+import edu.umd.rhsmith.diads.meater.modules.common.sentiment.PySentimentToolConfig;
 
 public class MEaterCommon extends ConfigModule {
 
 	public MEaterCommon() {
 		super("Common");
 
-		this.registerConfigType(PySentimentAnalyzerConfig.class);
+		this.registerConfigType(PySentimentToolConfig.class);
 		this.registerMediaType(SentimentAnalyzable.class);
 	}
 

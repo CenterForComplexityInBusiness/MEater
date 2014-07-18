@@ -1,24 +1,20 @@
 package edu.umd.rhsmith.diads.meater.modules.common.sentiment;
 
-import org.plyjy.factory.PySystemObjectFactory;
-import org.python.core.Py;
-import org.python.core.PyString;
-import org.python.core.PySystemState;
-
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaProcessor;
 import edu.umd.rhsmith.diads.meater.modules.common.sentiment.analyzers.ISentimentAnalyzer;
+import edu.umd.rhsmith.diads.meater.modules.common.sentiment.analyzers.PySentimentAnalyzer;
 import edu.umd.rhsmith.diads.meater.util.ControlException;
 
-public class PySentimentAnalyzer extends Component implements
+public class PySentimentTool extends Component implements
 		MediaProcessor<SentimentAnalyzable> {
 
 	private ISentimentAnalyzer ptool;
 	private final String classifierFilename;
 	private final String featuresFilename;
 
-	public PySentimentAnalyzer(PySentimentAnalyzerInitializer init) throws MEaterConfigurationException {
+	public PySentimentTool(PySentimentToolInitializer init) throws MEaterConfigurationException {
 		super(init);
 
 		this.classifierFilename = init.getClassifierFilename();
@@ -34,7 +30,7 @@ public class PySentimentAnalyzer extends Component implements
 	@Override
 	protected void doInitRoutine() throws MEaterConfigurationException {
 		this.logInfo(MSG_LOADING_TOOL);
-		this.ptool = getPythonTool(this.classifierFilename,
+		this.ptool = PySentimentAnalyzer.getSentimentAnalyzer(this.classifierFilename,
 				this.featuresFilename);
 		this.logInfo(MSG_LOADED_TOOL);
 	}
@@ -57,26 +53,6 @@ public class PySentimentAnalyzer extends Component implements
 	public boolean processMedia(SentimentAnalyzable media) {
 		this.ptool.process(media.getSentimentAnalysisText());
 		return true;
-	}
-
-	/*
-	 * --------------------------------
-	 * Python interaction
-	 * --------------------------------
-	 */
-
-	public static ISentimentAnalyzer getPythonTool(String classifierFilename,
-			String featuresFilename) {
-		String workingDir = System.getProperty("user.dir");
-		String pyDir = workingDir + "/py";
-		PySystemState sys = Py.getSystemState();
-		sys.path.append(new PyString(workingDir));
-		sys.path.append(new PyString(pyDir));
-		final PySystemObjectFactory factory = new PySystemObjectFactory(sys,
-				ISentimentAnalyzer.class, "SentimentAnalyzerP",
-				"SentimentAnalyzerP");
-		return (ISentimentAnalyzer) factory.createObject(classifierFilename,
-				featuresFilename);
 	}
 
 	/*

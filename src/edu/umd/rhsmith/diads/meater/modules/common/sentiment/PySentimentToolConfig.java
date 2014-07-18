@@ -4,10 +4,10 @@ import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
 import edu.umd.rhsmith.diads.meater.core.config.props.StringProperty;
 
-public class PySentimentAnalyzerConfig extends ComponentConfig implements
-		PySentimentAnalyzerInitializer {
+public class PySentimentToolConfig extends ComponentConfig implements
+		PySentimentToolInitializer {
 
-	public PySentimentAnalyzerConfig() {
+	public PySentimentToolConfig() {
 		super();
 		this.registerMediaProcessorName("", SentimentAnalyzable.class);
 		this.registerConfigProperty(classiferFilename);
@@ -15,9 +15,9 @@ public class PySentimentAnalyzerConfig extends ComponentConfig implements
 	}
 
 	@Override
-	public PySentimentAnalyzer instantiateComponent()
+	public PySentimentTool instantiateComponent()
 			throws MEaterConfigurationException {
-		return new PySentimentAnalyzer(this);
+		return new PySentimentTool(this);
 	}
 
 	/*
@@ -76,7 +76,7 @@ public class PySentimentAnalyzerConfig extends ComponentConfig implements
 	 * --------------------------------
 	 */
 
-	public static final String TNAME = "PySentimentAnalyzer";
+	public static final String TNAME = "PySentimentTool";
 	public static final String TDESC = "A Python-based tool for performing sentiment analysis on media instances implementing the SentimentAnalyzable interface.\n"
 			+ "Allows configuration of the serialized classifer and feature sets.";
 
