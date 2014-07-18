@@ -8,7 +8,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaProcessor;
-import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.BaseMediaSetUpdater;
+import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.SimpleMediaSetUpdater;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.MediaSetUpdater;
 import edu.umd.rhsmith.diads.meater.modules.tweater.media.UserStatusData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItem;
@@ -49,7 +49,7 @@ public abstract class StatusEater extends Component implements
 		this.registerMediaProcessor(this);
 
 		this.queries = new CopyOnWriteArraySet<QueryItem>();
-		this.queryUpdater = new BaseMediaSetUpdater<QueryItem>(PNAME_QADD,
+		this.queryUpdater = new SimpleMediaSetUpdater<QueryItem>(PNAME_QADD,
 				PNAME_QRMV, QueryItem.class) {
 			@Override
 			public boolean add(QueryItem media) {

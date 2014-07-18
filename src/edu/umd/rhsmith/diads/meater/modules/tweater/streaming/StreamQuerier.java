@@ -13,7 +13,7 @@ import twitter4j.auth.AccessToken;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaSource;
-import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.BaseMediaSetUpdater;
+import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.SimpleMediaSetUpdater;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.MediaSetUpdater;
 import edu.umd.rhsmith.diads.meater.modules.tweater.TwitterManager;
 import edu.umd.rhsmith.diads.meater.modules.tweater.media.DefaultStatusData;
@@ -95,7 +95,7 @@ public class StreamQuerier extends Component implements Runnable,
 		this.registerMediaSource(this.statusSource);
 
 		this.queryItems = new TreeSet<QueryItem>();
-		this.queryUpdater = new BaseMediaSetUpdater<QueryItem>(PNAME_QADD,
+		this.queryUpdater = new SimpleMediaSetUpdater<QueryItem>(PNAME_QADD,
 				PNAME_QRMV, QueryItem.class) {
 			@Override
 			public boolean add(QueryItem item) {

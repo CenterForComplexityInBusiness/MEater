@@ -2,12 +2,12 @@ package edu.umd.rhsmith.diads.meater.core.app.components.media.sets;
 
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaSource;
 
-public class BaseMediaSetUpdateViewer<M> implements MediaSetUpdateViewer<M> {
+public class SimpleMediaSetUpdateViewer<M> implements MediaSetUpdateViewer<M> {
 
 	private final MediaSource<M> adder;
 	private final MediaSource<M> remover;
 
-	public BaseMediaSetUpdateViewer(String adderName, String removerName,
+	public SimpleMediaSetUpdateViewer(String adderName, String removerName,
 			Class<M> mediaClass) throws IllegalArgumentException {
 		this.adder = new MediaSource<M>(removerName, mediaClass);
 		this.remover = new MediaSource<M>(removerName, mediaClass);

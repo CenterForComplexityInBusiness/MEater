@@ -8,7 +8,7 @@ import java.util.TreeSet;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
-import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.BaseMediaSetUpdateViewer;
+import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.SimpleMediaSetUpdateViewer;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.MediaSetUpdateViewer;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItem;
 import edu.umd.rhsmith.diads.meater.modules.tweater.queries.QueryItemTime;
@@ -80,7 +80,7 @@ public abstract class QuerySource extends Component implements Runnable {
 		this.prevQueries = new TreeSet<QueryItem>();
 		this.shutdownBuilderThread = false;
 
-		this.updater = new BaseMediaSetUpdateViewer<QueryItem>(PNAME_QADDED, PNAME_QRMVED,
+		this.updater = new SimpleMediaSetUpdateViewer<QueryItem>(PNAME_QADDED, PNAME_QRMVED,
 				QueryItem.class);
 		this.registerMediaSource(this.updater.getAddedMedia());
 		this.registerMediaSource(this.updater.getRemovedMedia());

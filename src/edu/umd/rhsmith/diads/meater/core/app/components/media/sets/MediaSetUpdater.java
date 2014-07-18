@@ -6,4 +6,8 @@ public interface MediaSetUpdater<M> {
 	public MediaProcessor<M> getMediaAdder();
 
 	public MediaProcessor<M> getMediaRemover();
+	
+	public boolean add(M media);
+	
+	public boolean remove(M media);
 }
