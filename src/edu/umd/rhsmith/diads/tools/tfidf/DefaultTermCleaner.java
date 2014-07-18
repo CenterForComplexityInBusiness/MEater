@@ -4,7 +4,11 @@ public class DefaultTermCleaner implements TermCleaner {
 
 	@Override
 	public String clean(String analysisText) {
-		return analysisText.replaceAll("[^\\w\\d\\s]", "");
+		return cleanText(analysisText);
+	}
+
+	public static String cleanText(String analysisText) {
+		return analysisText.replaceAll("[^\\w\\d\\s]", "").toLowerCase();
 	}
 
 }
