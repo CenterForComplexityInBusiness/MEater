@@ -1,5 +1,6 @@
 package edu.umd.rhsmith.diads.meater.modules.tweater.queries;
 
+import edu.umd.rhsmith.diads.meater.core.app.components.media.sets.MediaMatcher;
 import edu.umd.rhsmith.diads.meater.modules.tweater.media.StatusData;
 import edu.umd.rhsmith.diads.meater.modules.tweater.streaming.FilterQueryBuilder;
 
@@ -13,7 +14,8 @@ import edu.umd.rhsmith.diads.meater.modules.tweater.streaming.FilterQueryBuilder
  * 
  * @author dmonner
  */
-public abstract class QueryItem implements Comparable<QueryItem> {
+public abstract class QueryItem implements Comparable<QueryItem>,
+		MediaMatcher<StatusData> {
 
 	/**
 	 * A unique ID number for this <code>QueryItem</code>
@@ -33,7 +35,7 @@ public abstract class QueryItem implements Comparable<QueryItem> {
 	public long getQueryId() {
 		return this.queryId;
 	}
-	
+
 	/**
 	 * Determines whether the given status matches this <code>QueryItem</code>.
 	 * 
@@ -41,6 +43,7 @@ public abstract class QueryItem implements Comparable<QueryItem> {
 	 * @return <code>true</code> iff the given status matches this
 	 *         <code>QueryItem</code>
 	 */
+	@Override
 	public abstract boolean matches(StatusData status);
 
 	/**
