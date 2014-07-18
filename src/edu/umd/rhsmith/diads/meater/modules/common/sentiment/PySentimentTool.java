@@ -6,6 +6,7 @@ import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaProcessor;
 import edu.umd.rhsmith.diads.meater.util.ControlException;
 import edu.umd.rhsmith.diads.tools.sentiment.ISentimentAnalyzer;
 import edu.umd.rhsmith.diads.tools.sentiment.PySentimentAnalyzer;
+import edu.umd.rhsmith.diads.tools.sentiment.PySentimentAnalyzer.LoadFailureException;
 
 public class PySentimentTool extends Component implements
 		MediaProcessor<SentimentAnalyzable> {
@@ -14,7 +15,8 @@ public class PySentimentTool extends Component implements
 	private final String classifierFilename;
 	private final String featuresFilename;
 
-	public PySentimentTool(PySentimentToolInitializer init) throws MEaterConfigurationException {
+	public PySentimentTool(PySentimentToolInitializer init)
+			throws MEaterConfigurationException {
 		super(init);
 
 		this.classifierFilename = init.getClassifierFilename();
@@ -30,8 +32,12 @@ public class PySentimentTool extends Component implements
 	@Override
 	protected void doInitRoutine() throws MEaterConfigurationException {
 		this.logInfo(MSG_LOADING_TOOL);
-		this.ptool = PySentimentAnalyzer.getSentimentAnalyzer(this.classifierFilename,
-				this.featuresFilename);
+		try {
+			this.ptool = PySentimentAnalyzer.getSentimentAnalyzer(
+					this.classifierFilename, this.featuresFilename);
+		} catch (LoadFailureException e) {
+			throw new MEaterConfigurationException(MSG_ERR_ANALYZER_FAILED, e);
+		}
 		this.logInfo(MSG_LOADED_TOOL);
 	}
 
@@ -63,5 +69,6 @@ public class PySentimentTool extends Component implements
 
 	private static final String MSG_LOADED_TOOL = "Sentiment analysis tool loaded";
 	private static final String MSG_LOADING_TOOL = "Loading sentiment analysis tool";
+	private static final String MSG_ERR_ANALYZER_FAILED = "Unable to load sentiment analyzer";
 
 }
