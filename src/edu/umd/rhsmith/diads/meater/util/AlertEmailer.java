@@ -10,7 +10,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
- * A class that reads email information from a Properties object and can
+ * A class that takes email information and can
  * thereafter send email message alerts.
  * 
  * @author dmonner
