@@ -6,29 +6,29 @@ import java.util.TreeMap;
 
 public class DefaultTermExtractor implements ITermExtractor {
 
-	private TermCleaner cleaner;
+	private TermCleaner textCleaner;
 	private TermSplitter splitter;
 	private TermFilter filter;
 
 	public DefaultTermExtractor(TermCleaner cleaner, TermSplitter splitter,
 			TermFilter filter) {
-		this.cleaner = cleaner;
+		this.textCleaner = cleaner;
 		this.splitter = splitter;
 		this.filter = filter;
 	}
 
 	public DefaultTermExtractor() {
-		this.cleaner = new DefaultTermCleaner();
+		this.textCleaner = new DefaultTermCleaner();
 		this.splitter = new DefaultTermSplitter();
 		this.filter = new DefaultTermFilter();
 	}
 
-	public TermCleaner getCleaner() {
-		return cleaner;
+	public TermCleaner getTextCleaner() {
+		return textCleaner;
 	}
 
-	public void setCleaner(TermCleaner cleaner) {
-		this.cleaner = cleaner;
+	public void setTextCleaner(TermCleaner cleaner) {
+		this.textCleaner = cleaner;
 	}
 
 	public TermSplitter getSplitter() {
@@ -83,8 +83,8 @@ public class DefaultTermExtractor implements ITermExtractor {
 	}
 
 	protected String cleanText(String analysisText) {
-		if (this.cleaner != null) {
-			analysisText = cleaner.clean(analysisText);
+		if (this.textCleaner != null) {
+			analysisText = textCleaner.clean(analysisText);
 		}
 		return analysisText;
 	}
