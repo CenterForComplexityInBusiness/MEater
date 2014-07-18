@@ -4,4 +4,6 @@ import edu.umd.rhsmith.diads.meater.core.app.components.ComponentInitializer;
 
 public interface TermFreqToolInitializer extends ComponentInitializer {
 
+	int getNGrams();
+
 }

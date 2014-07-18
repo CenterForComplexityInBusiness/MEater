@@ -2,6 +2,7 @@ package edu.umd.rhsmith.diads.meater.modules.common.tfidf;
 
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.config.components.ComponentConfig;
+import edu.umd.rhsmith.diads.meater.core.config.props.IntProperty;
 
 public class TermFreqToolConfig extends ComponentConfig implements
 		TermFreqToolInitializer {
@@ -9,6 +10,7 @@ public class TermFreqToolConfig extends ComponentConfig implements
 	public TermFreqToolConfig() {
 		super();
 		this.registerMediaProcessorName("", TermExtractable.class);
+		this.registerConfigProperty(nGrams);
 	}
 
 	@Override
@@ -28,6 +30,19 @@ public class TermFreqToolConfig extends ComponentConfig implements
 	 * Config operations
 	 * --------------------------------
 	 */
+
+
+	private static final String UIDESC_NGRAMS = "Value of n for n-gram generation (set <= 1 to disable n-grams)";
+	private static final String UINAME_NGRAMS = "N-gram count";
+	private static final int DEFAULT_NGRAMS = 1;
+	private static final String CKEY_NGRAMS = "nGrams";
+	private final IntProperty nGrams = new IntProperty(CKEY_NGRAMS,
+			DEFAULT_NGRAMS, UINAME_NGRAMS, UIDESC_NGRAMS);
+
+	@Override
+	public int getNGrams() {
+		return this.nGrams.getVal();
+	}
 
 	/*
 	 * --------------------------------

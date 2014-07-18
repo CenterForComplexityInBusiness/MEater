@@ -6,6 +6,7 @@ import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaProcessor;
 import edu.umd.rhsmith.diads.meater.util.ControlException;
 import edu.umd.rhsmith.diads.tools.tfidf.DefaultTermExtractor;
 import edu.umd.rhsmith.diads.tools.tfidf.ITermExtractor;
+import edu.umd.rhsmith.diads.tools.tfidf.NGramGenerator;
 
 public class TermFreqTool extends Component implements
 		MediaProcessor<TermExtractable> {
@@ -16,6 +17,14 @@ public class TermFreqTool extends Component implements
 			throws MEaterConfigurationException {
 		super(init);
 		this.registerMediaProcessor(this);
+
+		this.logInfo(MSG_LOADING_TOOL);
+		DefaultTermExtractor e = new DefaultTermExtractor();
+		if (init.getNGrams() > 1) {
+			e.setFilter(new NGramGenerator(init.getNGrams()));
+		}
+		this.etool = e;
+		this.logInfo(MSG_LOADED_TOOL);
 	}
 
 	@Override
@@ -24,9 +33,6 @@ public class TermFreqTool extends Component implements
 
 	@Override
 	protected void doInitRoutine() throws MEaterConfigurationException {
-		this.logInfo(MSG_LOADING_TOOL);
-		this.etool = new DefaultTermExtractor();
-		this.logInfo(MSG_LOADED_TOOL);
 	}
 
 	@Override
