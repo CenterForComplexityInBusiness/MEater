@@ -114,8 +114,12 @@ public class MEaterMain extends ControlUnit {
 	 * --------------------------------
 	 */
 
-	public void addRuntimeModule(RuntimeModule m) throws IllegalStateException,
-			ModuleAlreadyLoadedException {
+	public void addRuntimeModule(RuntimeModule m) throws NullPointerException,
+			IllegalStateException, ModuleAlreadyLoadedException {
+		if (m == null) {
+			throw new NullPointerException();
+		}
+
 		synchronized (this.controlLock) {
 			this.requireUnStarted();
 
@@ -142,11 +146,20 @@ public class MEaterMain extends ControlUnit {
 	 * --------------------------------
 	 */
 
-	private static String genLogFileName(final MEaterMain m) {
+	private static String genLogFileName(final MEaterMain m)
+			throws NullPointerException {
+		if (m == null) {
+			throw new NullPointerException();
+		}
+
 		return String.format("%s.log", m.getName());
 	}
 
-	public static String genName(String configName) {
+	public static String genName(String configName) throws NullPointerException {
+		if (configName == null) {
+			throw new NullPointerException();
+		}
+
 		return String.format("meater_%s_%d", configName, new Date().getTime());
 	}
 
