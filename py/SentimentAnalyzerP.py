@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from edu.umd.rhsmith.diads.meater.modules.common.sentiment import ISentimentAnalyzer
+from edu.umd.rhsmith.diads.tools.sentiment import ISentimentAnalyzer
 import pickle
 import re
 import os

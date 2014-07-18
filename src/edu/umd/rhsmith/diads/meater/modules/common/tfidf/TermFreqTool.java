@@ -3,9 +3,9 @@ package edu.umd.rhsmith.diads.meater.modules.common.tfidf;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaProcessor;
-import edu.umd.rhsmith.diads.meater.modules.common.tfidf.extractors.ITermExtractor;
-import edu.umd.rhsmith.diads.meater.modules.common.tfidf.extractors.SimpleTermExtractor;
 import edu.umd.rhsmith.diads.meater.util.ControlException;
+import edu.umd.rhsmith.diads.tools.tfidf.ITermExtractor;
+import edu.umd.rhsmith.diads.tools.tfidf.SimpleTermExtractor;
 
 public class TermFreqTool extends Component implements
 		MediaProcessor<TermExtractable> {

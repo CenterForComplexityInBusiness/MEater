@@ -1,4 +1,4 @@
-package edu.umd.rhsmith.diads.meater.modules.common.tfidf.extractors;
+package edu.umd.rhsmith.diads.tools.tfidf;
 
 import java.util.List;
 import java.util.Map;

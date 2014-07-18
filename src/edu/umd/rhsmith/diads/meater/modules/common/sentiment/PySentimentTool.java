@@ -3,9 +3,9 @@ package edu.umd.rhsmith.diads.meater.modules.common.sentiment;
 import edu.umd.rhsmith.diads.meater.core.app.MEaterConfigurationException;
 import edu.umd.rhsmith.diads.meater.core.app.components.Component;
 import edu.umd.rhsmith.diads.meater.core.app.components.media.MediaProcessor;
-import edu.umd.rhsmith.diads.meater.modules.common.sentiment.analyzers.ISentimentAnalyzer;
-import edu.umd.rhsmith.diads.meater.modules.common.sentiment.analyzers.PySentimentAnalyzer;
 import edu.umd.rhsmith.diads.meater.util.ControlException;
+import edu.umd.rhsmith.diads.tools.sentiment.ISentimentAnalyzer;
+import edu.umd.rhsmith.diads.tools.sentiment.PySentimentAnalyzer;
 
 public class PySentimentTool extends Component implements
 		MediaProcessor<SentimentAnalyzable> {

@@ -1,4 +1,4 @@
-package edu.umd.rhsmith.diads.meater.modules.common.sentiment.analyzers;
+package edu.umd.rhsmith.diads.tools.sentiment;
 
 import org.plyjy.factory.PySystemObjectFactory;
 import org.python.core.Py;
