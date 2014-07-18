@@ -41,7 +41,8 @@ Icon
 
 # eclipse
 /.settings
-
+/.classpath
+/.project
 
 # build things
 /bin
