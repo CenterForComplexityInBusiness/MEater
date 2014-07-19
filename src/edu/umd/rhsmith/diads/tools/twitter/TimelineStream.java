@@ -46,6 +46,12 @@ import twitter4j.conf.ConfigurationBuilder;
  * default). Once shut down, the should-shut-down state of a
  * {@code TimelineStream} instance is reset, allowing instances to be re-used
  * for multiple collections.
+ * <p>
+ * </p>
+ * If the thread executing the collection is
+ * interrupted, the thread will immediately stop collecting the current user or
+ * waiting or waiting for a new user to be added to the user queue and check its
+ * should-shut-down state.
  * </p>
  * <p>
  * {@code TimelineStreamListener} instances are registered and unregistered via
@@ -314,10 +320,12 @@ public class TimelineStream implements Runnable {
 	/**
 	 * <p>
 	 * Remove and return the next user id in this {@code TimelineStream}
-	 * instance's user queue. Stops attempting to get an id and returns
-	 * <code>-1</code> if shutdown is requested via {@link #isShouldShutdown()},
-	 * or if the queue is empty and {@link #isShutdownWhenEmpty()} returns
-	 * <code>true</code>.
+	 * instance's user queue, waiting if necessary for a user to be entered into
+	 * the queue. Stops attempting to get an id and returns <code>-1</code> if
+	 * shutdown is requested via {@link #isShouldShutdown()}, or if the queue is
+	 * empty and {@link #isShutdownWhenEmpty()} returns <code>true</code>. Also
+	 * returns <code>-1</code> if the current thread is interrupted while
+	 * waiting for the user id.
 	 * </p>
 	 * 
 	 * @return the next user id in this {@code TimelineStream} instance's user
