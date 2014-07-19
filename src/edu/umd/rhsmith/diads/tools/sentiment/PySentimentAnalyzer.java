@@ -16,6 +16,10 @@ import org.python.core.PySystemState;
  * @author dmonner
  * @author rmachedo
  * 
+ * @see ISentimentAnalyzer
+ * @see PySentimentAnalyzer#getSentimentAnalyzer(String, String)
+ * @see PySentimentAnalyzer.LoadFailureException
+ * 
  */
 public class PySentimentAnalyzer {
 
