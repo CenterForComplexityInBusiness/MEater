@@ -85,8 +85,10 @@ public class TimelineStream implements Runnable {
 	private final Set<TimelineStreamListener> listeners;
 
 	/**
+	 * <p>
 	 * Creates a new {@code TimelineStream} instance with the given OAuth
 	 * information to use for collection.
+	 * </p>
 	 * 
 	 * @param consumerKey
 	 *            the Twitter consumer key to use
@@ -118,8 +120,10 @@ public class TimelineStream implements Runnable {
 	}
 
 	/**
+	 * <p>
 	 * Creates a new {@code TimelineStream} instance with the given
-	 * {@link Twitter} instance to use for collection
+	 * {@link Twitter} instance to use for collection.
+	 * </p>
 	 * 
 	 * @param twitter
 	 *            the {@link Twitter} instance to use
@@ -135,6 +139,7 @@ public class TimelineStream implements Runnable {
 	}
 
 	/**
+	 * <p>
 	 * Creates a new {@code TimelineStream} instance with no {@link Twitter}
 	 * instance to use for collection. This constructor is for use by subclasses
 	 * which also override the {@link #getTwitter()} method to supply and manage
@@ -142,6 +147,7 @@ public class TimelineStream implements Runnable {
 	 * constructor is used, it will return {@code null} and a
 	 * {@code NullPointerException} may be thrown by {@code run()} during
 	 * collection.
+	 * </p>
 	 */
 	protected TimelineStream() {
 		this(null);
@@ -162,6 +168,12 @@ public class TimelineStream implements Runnable {
 	 * registered TimelineStreamListener instances. When collection finishes,
 	 * notifies listeners via {@link TimelineStreamListener#onShutdown()} and
 	 * resets this {@code TimelineStream}'s should-shut-down state.
+	 * </p>
+	 * </p>
+	 * If the thread executing the collection is interrupted, the thread will
+	 * immediately stop collecting the current user or waiting or waiting for a
+	 * new user to be added to the user queue and check its should-shut-down
+	 * state.
 	 * </p>
 	 */
 	@Override
@@ -596,9 +608,9 @@ public class TimelineStream implements Runnable {
 	/**
 	 * <p>
 	 * Collect and return a list of {@link Status} objects corresponding to the
-	 * given page index (for pages of 200 tweets) from the given user's
-	 * timeline. If the page cannot be retrieved, return {@code null} to
-	 * indicate that the current user's collection should be stopped.
+	 * given page index from the given user's timeline. If the page cannot be
+	 * retrieved, return {@code null} to indicate that the current user's
+	 * collection should be stopped.
 	 * </p>
 	 * <p>
 	 * If an exception is raised while collecting the page, attempts to handle
