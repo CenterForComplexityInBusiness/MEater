@@ -50,9 +50,6 @@ public class DefaultTermExtractor implements ITermExtractor {
 	@Override
 	public Map<String, Double> process(String analysisText) {
 		Map<String, Double> tf = new TreeMap<String, Double>();
-		if (analysisText == null) {
-			return tf;
-		}
 
 		analysisText = cleanText(analysisText);
 		if (analysisText == null) {
@@ -60,14 +57,8 @@ public class DefaultTermExtractor implements ITermExtractor {
 		}
 
 		List<String> terms = getTerms(analysisText);
-		if (terms == null) {
-			return tf;
-		}
 
 		terms = filterTerms(terms);
-		if (terms == null) {
-			return tf;
-		}
 
 		for (String term : terms) {
 			if (term != null) {

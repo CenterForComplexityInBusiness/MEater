@@ -1,8 +1,8 @@
 package edu.umd.rhsmith.diads.tools.sentiment;
 
 /**
- * An interface defining requirements for a sentiment-analysis tool. Such a
- * tool must take in a {@code String} for the text to be analyzed, and output a
+ * An interface defining a sentiment-analysis tool. Such a
+ * tool takes in a {@code String} for the text to be analyzed, and outputs a
  * {@code double} value representing on a scale from {@code [-1.0, 1.0]} the
  * computed sentiment of the text (with more negative values corresponding to
  * more negative sentiment, and more positive values corresponding to more

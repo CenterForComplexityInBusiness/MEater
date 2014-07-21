@@ -3,14 +3,14 @@ package edu.umd.rhsmith.diads.tools.tfidf;
 import java.util.Map;
 
 /**
- * An interface defining requirements for a term-extraction tool. Such a
- * tool must take in a {@code String} for the text to be analyzed, and output a
+ * An interface defining a term-extraction tool. Such a
+ * tool takes in a {@code String} for the text to be analyzed, and outputs a
  * mapping of term {@code String}s to {@code Double} values of the term's weight
  * in the given analysis text. These weight values may be the number of times
  * the term appears in the text, or another value such as their TF-IDF weight
  * in a given document set.
  * 
- * @author dmonner
+ * @author rmachedo
  * 
  */
 public interface ITermExtractor {
